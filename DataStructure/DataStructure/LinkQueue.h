@@ -13,6 +13,14 @@ class LinkQueue
 public:
 	LinkQueue();
 	~LinkQueue() = default;
+	auto operator<<(ConstRef e)->LinkQueue&;
+	friend std::ostream& operator<<(std::ostream &os, const LinkQueue &self)
+	{
+		for (auto p = self.m_front->next; p; p = p->next)
+			os << p->data << " ";
+		os << std::endl;
+		return os;
+	}
 	auto IsEmpty()const->bool;
 	auto Push(ConstRef e)->void;
 	auto Pop()->void;
@@ -28,6 +36,13 @@ template<typename T>
 inline LinkQueue<T>::LinkQueue()
 {
 	m_front = m_rear = m_base.m_headNode;
+}
+
+template<typename T>
+inline auto LinkQueue<T>::operator<<(ConstRef e) -> LinkQueue &
+{
+	Push(e);
+	return *this;
 }
 
 template<typename T>
@@ -51,15 +66,15 @@ auto LinkQueue<T>::Pop() -> void
 		return;
 	NodePtr beDel = m_front->next;
 	m_front->next = beDel->next;
-	delete beDel;
 	if (m_rear == beDel)
 		m_rear = m_front;
+	delete beDel;
 }
 
 template<typename T>
 inline auto LinkQueue<T>::Head() const -> Elem
 {
-	return *m_front;
+	return m_front->next->data;
 }
 
 template class LinkQueue<int>;

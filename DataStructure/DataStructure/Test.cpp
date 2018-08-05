@@ -71,27 +71,16 @@ void Test::TestList()
 
 void Test::TestQueue()
 {
-	//SqQueue<int> q;
-	//RandInt rand(1, 100);
-	//int n = 10;
-	//while (n--)
-	//{
-	//	int x = rand();
-	//	q << x;
-	//}
-	//DebugVar(q);
-	//int t = 6;
-	//while (t--)
-	//	q.Pop();
-	//DebugVar(q);
-	//n = 28;
-	//while (n--)
-	//{
-	//	int x = rand();
-	//	q << x;
-	//}
-	//DebugVar(q);
-	// 
-
-	LinkQueue<> q;
+	LinkQueue<int> q;
+	RandInt rand(10, 50);
+	int n = 10;
+	while (n--)
+		q << rand();
+	DebugVar(q);
+	while (!q.IsEmpty())
+	{
+		DebugVar(q.Head());
+		q.Pop();
+		DebugVar(q);
+	}
 }
