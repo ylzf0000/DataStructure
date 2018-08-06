@@ -16,8 +16,9 @@ ZXXXE::Calculator::Calculator()
 	m_intFromChar[')'] = 6;
 }
 
-double ZXXXE::Calculator::Value(const string & input) const
+double ZXXXE::Calculator::Value(const string & _input) const
 {
+	string input = _input + "#";
 	SqList<OperAndVal> lst = Postfix(input);
 	SqStack<double> s;
 	for (int i = 0; i < lst.Length(); ++i)

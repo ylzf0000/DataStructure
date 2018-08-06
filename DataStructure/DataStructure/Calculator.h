@@ -9,6 +9,15 @@ namespace ZXXXE
 	{
 	public:
 		Calculator();
+		//************************************
+		// Method:    Value
+		// Desc:      Now it only suppose + - * /
+		// FullName:  ZXXXE::Calculator::Value
+		// Access:    public 
+		// Returns:   double
+		// Qualifier: const
+		// Parameter: const string & input
+		//************************************
 		double Value(const string &input) const;
 	private:
 		struct OperAndVal;

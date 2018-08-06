@@ -110,11 +110,7 @@ auto ZXXXE::Test::Calculate(const string & s) -> double
 	Calculator cal;
 	string ss;
 	while (cin >> ss)
-	{
-		ss += "#";
 		cal.Value(ss);
-	}
-		
 	return 0;
 }
 
