@@ -112,4 +112,4 @@ inline auto SqQueue<T>::rear() const -> int
 	return idx(m_rear);
 }
 
-template class SqQueue<int>;
+template class SqQueue<int>; 
