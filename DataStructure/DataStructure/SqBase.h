@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <iostream>
+#include "stdafx.h"
 template <typename T>
 class SqBase
 {

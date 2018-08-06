@@ -13,6 +13,7 @@ public:
 	using Ptr = T * ;
 	using ConstPtr = const T *;
 	SqList();
+	SqList(const SqList &right);
 	~SqList();
 	auto Length() const -> int;
 	auto Capacity() const -> int;
@@ -75,6 +76,16 @@ template<typename T>
 inline SqList<T>::SqList()
 {
 	m_data = new Elem[INIT_SIZE];
+}
+
+template<typename T>
+SqList<T>::SqList(const SqList & right)
+{
+	m_length = right.m_length;
+	m_maxSize = m_length;
+	m_data = new Elem[m_maxSize];
+	for (int i = 0; i < m_length; ++i)
+		m_data[i] = right.m_data[i];
 }
 
 template<typename T>

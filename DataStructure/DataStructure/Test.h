@@ -1,9 +1,16 @@
 #pragma once
-class Test
+#include <string>
+namespace ZXXXE 
 {
-public:
-	Test();
-	void TestLinkList();
-	void TestList();
-	void TestQueue();
-};
+	using namespace std;
+	class Test
+	{
+	public:
+		Test();
+		void TestLinkList();
+		void TestList();
+		void TestQueue();
+		void TestStack();
+		auto Calculate(const string &s)->double;
+	};
+}

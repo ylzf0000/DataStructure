@@ -2,112 +2,82 @@
 #include <cstdlib>
 #include <cassert>
 #include <iostream>
+#include "SqBase.h"
 template <typename T>
 class SqStack
 {
+	TYPE_ALIAS(T);
 public:
-	using Elem = T;
-	using Ref = T & ;
-	using ConstRef = const T &;
-	using Ptr = T * ;
-	using ConstPtr = const T *;
 	SqStack();
 	~SqStack();
+	auto operator<<(ConstRef e)->SqStack&;
+	friend std::ostream& operator<<(std::ostream &os, const SqStack &self)
+	{
+		for (int i = 0; i <= self.m_top; ++i)
+			os << self.m_base.m_data[i] << " ";
+		os << std::endl;
+		return os;
+	}
 	bool IsEmpty() const;
 	void Push(ConstRef e);
 	void Pop();
-	Ref Top();
-	ConstRef Top() const;
+	Elem Top() const;
 	void Clear();
 private:
-	template <int C = 0>
-	auto AssertRange(int i) const -> void
-	{
-		assert(i >= 0 && i < m_length);
-	}
-	template <>
-	auto AssertRange<1>(int i) const -> void
-	{
-		assert(i >= 0 && i <= m_length);
-	}
-	auto Free() -> void;
-	auto Expend() -> void;
-	const int INIT_SIZE = 5;
-	int m_maxSize = INIT_SIZE;
-	int m_length;
-	Elem * m_data;
+	SqBase<Elem> m_base;
+	int m_top = -1;
 };
 
 template<typename T>
 inline SqStack<T>::SqStack()
 {
-	m_data = new Elem[INIT_SIZE];
+	DebugFunc;
 }
 
 template<typename T>
 inline SqStack<T>::~SqStack()
 {
-	Free();
+	DebugFunc;
+}
+
+template<typename T>
+inline auto SqStack<T>::operator<<(ConstRef e) -> SqStack &
+{
+	Push(e);
+	return *this;
 }
 
 template<typename T>
 inline bool SqStack<T>::IsEmpty() const
 {
-	return m_length == 0;
+	return m_top == -1;
 }
 
 template<typename T>
 void SqStack<T>::Push(ConstRef e)
 {
-	if (m_length == m_maxSize)
-		Expend();
-	m_data[m_length++] = e;
+	if (m_top + 1 == m_base.m_maxSize)
+		m_base.Expend();
+	m_base.m_data[++m_top] = e;
 }
 
 template<typename T>
 inline void SqStack<T>::Pop()
 {
-	--m_length;
+	--m_top;
 }
 
 template<typename T>
-inline auto SqStack<T>::Top() -> Ref
+inline auto SqStack<T>::Top() const -> Elem
 {
-	return m_data[m_length - 1];
-}
-
-template<typename T>
-inline auto SqStack<T>::Top() const -> ConstRef
-{
-	return m_data[m_length - 1];
+	return m_base.m_data[m_top];
 }
 
 template<typename T>
 inline void SqStack<T>::Clear()
 {
-	m_length = 0;
-	Free();
-}
-
-template<typename T>
-inline auto SqStack<T>::Free() -> void
-{
-	delete[] m_data;
-	m_data = nullptr;
-}
-
-template<typename T>
-auto SqStack<T>::Expend() -> void
-{
-	int newSize = m_maxSize == 0 ? 2 : m_maxSize * 2;
-	Elem *data = new Elem[newSize];
-	for (int i = 0; i < m_length; ++i)
-	{
-		data[i] = std::move(m_data[i]);
-	}
-	Free();
-	m_data = data;
-	m_maxSize = newSize;
+	m_top = -1;
+	m_base.Free();
 }
 
 template class SqStack<int>;

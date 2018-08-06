@@ -7,22 +7,26 @@
 #include "Algorithm.h"
 #include "SqQueue.h"
 #include "LinkQueue.h"
+#include "Calculator.h"
 #include <vector>
+#include <string>
 using namespace std;
 
-Test::Test()
+ZXXXE::Test::Test()
 {
 	//TestList();
 	//TestLinkList();
-	TestQueue();
+	//TestQueue();
+	//TestStack();
+	this->Calculate("#1+2-3*((4+5)*3-1)+2#");
 }
 #define TEST 1
-void Test::TestLinkList()
+void ZXXXE::Test::TestLinkList()
 {
 #ifdef TEST
 	LinkList<int> a, b;
 	int n = 10;
-	RandInt rand(1,100);
+	RandInt rand(1, 100);
 	while (n--)
 	{
 		a << rand();
@@ -40,7 +44,7 @@ void Test::TestLinkList()
 	DebugVar(b);
 	a.MergeEx(b);
 	DebugVar(a);
-	RandInt a11(1,2);
+	RandInt a11(1, 2);
 	//a.TSort<greater>();
 	//DebugVar(a);
 	//a.Unique();
@@ -49,7 +53,7 @@ void Test::TestLinkList()
 
 }
 
-void Test::TestList()
+void ZXXXE::Test::TestList()
 {
 #if(!TEST)
 	SqList<int> a, b;
@@ -69,7 +73,7 @@ void Test::TestList()
 
 }
 
-void Test::TestQueue()
+void ZXXXE::Test::TestQueue()
 {
 	LinkQueue<int> q;
 	RandInt rand(10, 50);
@@ -84,3 +88,33 @@ void Test::TestQueue()
 		DebugVar(q);
 	}
 }
+
+void ZXXXE::Test::TestStack()
+{
+	SqStack<int> s;
+	int n = 10;
+	RandInt rand(1, 100);
+	while (n--)
+		s << rand();
+	DebugVar(s);
+	while (!s.IsEmpty())
+	{
+		DebugVar(s.Top());
+		s.Pop();
+	}
+	DebugVar(s);
+}
+
+auto ZXXXE::Test::Calculate(const string & s) -> double
+{
+	Calculator cal;
+	string ss;
+	while (cin >> ss)
+	{
+		ss += "#";
+		cal.Value(ss);
+	}
+		
+	return 0;
+}
+

@@ -1,5 +1,6 @@
 #pragma once
-
+#include <string>
+#include <iostream>
 template<class Con1, class Con2>
 void Union(Con1 &a, const Con2 &b)
 {

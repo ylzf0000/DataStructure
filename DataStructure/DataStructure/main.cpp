@@ -4,7 +4,7 @@
 using namespace std;
 int main()
 {
-	Test();
+	ZXXXE::Test();
 
 	system("pause");
 }

@@ -14,7 +14,7 @@ public:
 	auto operator<<(ConstRef e)->SqQueue&;
 	friend std::ostream& operator<<(std::ostream &os, const SqQueue &self)
 	{
-		for (int i = self.m_front; i != self.rear(); i = self.nextIdx(i))
+		for (int i = self.m_front; i != self.idx(self.m_rear); i = self.idx(i + 1))
 			os << self.m_base.m_data[i] << " ";
 		os << std::endl;
 		return os;
@@ -30,10 +30,7 @@ public:
 
 private:
 	auto isFull()const->bool;
-	auto nextIdx(int i)const->int;
-	auto nextRear()const->int;
 	auto idx(int i)const->int;
-	auto rear()const->int;
 	SqBase<Elem> m_base;
 	int m_front = 0;
 	int m_rear = 0;
@@ -66,14 +63,14 @@ auto SqQueue<T>::Push(ConstRef e) -> void
 		m_base.Expend();
 	}
 	m_base.m_data[m_rear] = e;
-	m_rear = this->nextRear();
+	m_rear = this->idx(m_rear + 1);
 }
 
 template<typename T>
 auto SqQueue<T>::Pop() -> void
 {
 	if (!IsEmpty())
-		++m_front;
+		m_front = idx(m_front + 1);
 }
 
 template<typename T>
@@ -85,19 +82,7 @@ inline auto SqQueue<T>::Head() -> Elem
 template<typename T>
 inline auto SqQueue<T>::isFull() const -> bool
 {
-	return m_front == nextRear();
-}
-
-template<typename T>
-inline auto SqQueue<T>::nextIdx(int i) const -> int
-{
-	return idx(i + 1);
-}
-
-template<typename T>
-inline auto SqQueue<T>::nextRear() const -> int
-{
-	return nextIdx(m_rear);
+	return m_front == idx(m_rear + 1);
 }
 
 template<typename T>
@@ -106,10 +91,4 @@ inline auto SqQueue<T>::idx(int i) const -> int
 	return i % m_base.m_maxSize;
 }
 
-template<typename T>
-inline auto SqQueue<T>::rear() const -> int
-{
-	return idx(m_rear);
-}
-
-template class SqQueue<int>; 
+template class SqQueue<int>;
