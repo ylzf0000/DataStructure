@@ -25,7 +25,7 @@ private:
     auto inOrder(ConstNodePtr node)const->void;
     auto postOrder(ConstNodePtr node)const->void;
     void free(NodePtr &node);
-    BiNode<Elem> * m_root = nullptr;
+    NodePtr m_root = nullptr;
 };
 
 template<typename T>

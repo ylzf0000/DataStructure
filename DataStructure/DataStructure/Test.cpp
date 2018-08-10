@@ -145,9 +145,8 @@ auto ZXXXE::Test::Recursion() -> void
 auto ZXXXE::Test::TestTree() -> void
 {
     BiTree<int> tree;
-    SqList<int> lst;
-    lst << 1 << 2 << 3 << 0 << 0 << 4 << 0 << 0 << 5 << 6 << 0 << 0 << 7 << 0 << 0;
-    tree.Generate(lst.begin(), lst.end());
+    int lst[] = { 1,2,3,4,0,0,5,0,0,6,0,0,7,8,10,0,0,0,9,0,0 };
+    tree.Generate(begin(lst), end(lst));
     tree.PreOrder();
     tree.InOrder();
     tree.PostOrder();
