@@ -54,6 +54,9 @@
     <ClInclude Include="Calculator.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BiTree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

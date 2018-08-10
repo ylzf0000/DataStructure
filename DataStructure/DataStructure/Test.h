@@ -12,5 +12,7 @@ namespace ZXXXE
 		void TestQueue();
 		void TestStack();
 		auto Calculate(const string &s)->double;
+		auto Recursion()->void;
+        auto TestTree()->void;
 	};
 }

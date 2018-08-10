@@ -117,6 +117,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm.h" />
+    <ClInclude Include="BiTree.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="DLinkList.h" />
     <ClInclude Include="LinkBase.h" />
