@@ -145,10 +145,20 @@ auto ZXXXE::Test::Recursion() -> void
 auto ZXXXE::Test::TestTree() -> void
 {
     BiTree<int> tree;
-    int lst[] = { 1,2,3,4,0,0,5,0,0,6,0,0,7,8,10,0,0,0,9,0,0 };
+    //int lst[] = { 1,2,3,4,0,0,5,0,0,6,0,0,7,8,10,0,0,0,9,0,0 };
+    //          5
+    //        /   \
+    //       /     \
+    //      4       9
+    //     /       / \
+    //    2       7   10
+    //   / \     / \   
+    //  1   3   6   8                 
+    int lst[] = { 5,4,2,1,0,0,3,0,0,0,9,7,6,0,0,8,0,0,10,0,0 };
     tree.Generate(begin(lst), end(lst));
-    tree.PreOrder();
-    tree.InOrder();
-    tree.PostOrder();
+    //tree.PreOrder2();
+    tree.InOrder2();
+    tree.LevelOrder();
+    //tree.PostOrder2();
 }
 

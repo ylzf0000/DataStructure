@@ -6,6 +6,11 @@ struct BiNode
     BiNode *lc = nullptr;
     BiNode *rc = nullptr;
 };
+constexpr unsigned MAXSIZE = 100;
+#define VISIT(node)           { \
+    if (node)                   \
+        DebugVar(node->data); }
+
 template <typename T>
 class BiTree
 {
@@ -17,8 +22,12 @@ public:
     auto Generate(ConstPtr begin, ConstPtr end)->void;
     auto Order(OrderEnum o)const->void;
     auto PreOrder()const->void;
+    auto PreOrder2()const->void;
     auto InOrder()const->void;
+    auto InOrder2()const->void;
     auto PostOrder()const->void;
+    auto PostOrder2()const->void;
+    auto LevelOrder()const->void;
     ~BiTree();
 private:
     auto preOrder(ConstNodePtr node)const->void;
@@ -116,6 +125,27 @@ inline auto BiTree<T>::PreOrder() const -> void
 }
 
 template<typename T>
+inline auto BiTree<T>::PreOrder2() const -> void
+{
+    DebugFunc;
+    if (!m_root)
+        return;
+    NodePtr s[MAXSIZE];
+    int top = -1;
+    s[++top] = m_root;
+    while (top > -1)
+    {
+        NodePtr p = s[top];
+        VISIT(s[top]);
+        --top;
+        if (p->rc)
+            s[++top] = p->rc;
+        if (p->lc)
+            s[++top] = p->lc;
+    }
+}
+
+template<typename T>
 inline auto BiTree<T>::InOrder() const -> void
 {
     DebugFunc;
@@ -123,8 +153,80 @@ inline auto BiTree<T>::InOrder() const -> void
 }
 
 template<typename T>
+auto BiTree<T>::InOrder2() const -> void
+{
+    DebugFunc;
+    if (!m_root)
+        return;
+    NodePtr s[MAXSIZE];
+    int top = -1;
+    s[++top] = m_root;
+    NodePtr p = m_root->lc;
+    while (top > -1 || p)
+    {
+        if (p)
+        {
+            s[++top] = p;
+            p = p->lc;
+        }
+        else
+        {
+            p = s[top--];
+            VISIT(p);
+            p = p->rc;
+        }
+    }
+}
+
+template<typename T>
 inline auto BiTree<T>::PostOrder() const -> void
 {
     DebugFunc;
     postOrder(m_root);
+}
+
+template<typename T>
+inline auto BiTree<T>::PostOrder2() const -> void
+{
+    DebugFunc;
+    if (!m_root)
+        return;
+    NodePtr s1[MAXSIZE], s2[MAXSIZE];
+    int top1 = -1, top2 = -1;
+    s1[++top1] = m_root;
+    while (top1 > -1)
+    {
+        NodePtr p = s1[top1--];
+        s2[++top2] = p;
+        if (p->lc)
+            s1[++top1] = p->lc;
+        if (p->rc)
+            s1[++top1] = p->rc;
+    }
+    while (top2 > -1)
+    {
+        VISIT(s2[top2]);
+        --top2;
+    }
+
+}
+
+template<typename T>
+inline auto BiTree<T>::LevelOrder() const -> void
+{
+    if (!m_root)
+        return;
+    NodePtr q[MAXSIZE];
+    int head = 0, rear = -1;
+    NodePtr p = m_root;
+    q[++rear] = m_root;
+    while (rear - head > -1)
+    {
+        p = q[head++];
+        VISIT(p);
+        if (p->lc)
+            q[++rear] = p->lc;
+        if (p->rc)
+            q[++rear] = p->rc;
+    }
 }
