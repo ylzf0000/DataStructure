@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 template <typename T>
 struct BiNode
 {
@@ -19,6 +20,8 @@ class BiTree
 public:
     enum OrderEnum { Pre, In, Post };
     BiTree() = default;
+    ~BiTree();
+    auto GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList)->void;
     auto Generate(ConstPtr begin, ConstPtr end)->void;
     auto Order(OrderEnum o)const->void;
     auto PreOrder()const->void;
@@ -28,7 +31,7 @@ public:
     auto PostOrder()const->void;
     auto PostOrder2()const->void;
     auto LevelOrder()const->void;
-    ~BiTree();
+
 private:
     auto preOrder(ConstNodePtr node)const->void;
     auto inOrder(ConstNodePtr node)const->void;
@@ -41,6 +44,51 @@ template<typename T>
 inline BiTree<T>::~BiTree()
 {
     free(m_root);
+}
+
+template<typename T>
+inline auto BiTree<T>::GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList) -> void
+{
+    using initListType = decltype(preList);
+    using iter = typename initListType::const_iterator;
+    std::function<void(iter, iter, iter, iter, NodePtr&, bool)> gen = [=, &gen](iter preBegin, iter preEnd, iter inBegin, iter inEnd, NodePtr &parent, bool left)
+    {
+        if (!(preBegin < preEnd) || !(inBegin < inEnd))
+            return;
+        auto val = *preBegin;
+        DebugVar(val);
+        NodePtr node = new Node{ val };
+        if (!parent)
+            parent = node;
+        else
+        {
+            if (left)
+                parent->lc = node;
+            else
+                parent->rc = node;
+        }
+        iter newInEnd1 = inBegin;
+        while (newInEnd1 != inEnd && *newInEnd1 != val)
+            ++newInEnd1;
+        iter newPreBegin2;
+        for (newPreBegin2 = preBegin + 1; newPreBegin2 != preEnd; ++newPreBegin2)
+        {
+            iter it;
+            for (it = newInEnd1; it != inEnd && *it != *newPreBegin2; ++it);
+            if (it != inEnd)
+                break;
+        }
+        gen(preBegin + 1, newPreBegin2, inBegin, newInEnd1, node, true);
+        gen(newPreBegin2, preEnd, newInEnd1 + 1, inEnd, node, false);
+    };
+    m_root = nullptr;
+    gen(preList.begin(), preList.end(), inList.begin(), inList.end(), m_root, true);
+
+    //PreOrder();
+    //InOrder();
+    //PostOrder();
+    //InOrder2();
+    //PostOrder2();
 }
 
 template<typename T>
