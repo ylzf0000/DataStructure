@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include "SqStack.h"
 template <typename T>
 struct BiNode
 {
@@ -8,9 +9,12 @@ struct BiNode
     BiNode *rc = nullptr;
 };
 constexpr unsigned MAXSIZE = 100;
+
+#ifndef VISIT
 #define VISIT(node)           { \
     if (node)                   \
         DebugVar(node->data); }
+#endif // !VISIT
 
 template <typename T>
 class BiTree
@@ -30,6 +34,7 @@ public:
     auto InOrder2()const->void;
     auto PostOrder()const->void;
     auto PostOrder2()const->void;
+    auto PostOrder3()const->void;
     auto LevelOrder()const->void;
 
 private:
@@ -49,9 +54,9 @@ inline BiTree<T>::~BiTree()
 template<typename T>
 inline auto BiTree<T>::GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList) -> void
 {
-    using initListType = decltype(preList);
-    using iter = typename initListType::const_iterator;
-    std::function<void(iter, iter, iter, iter, NodePtr&, bool)> gen = [=, &gen](iter preBegin, iter preEnd, iter inBegin, iter inEnd, NodePtr &parent, bool left)
+    using iter = typename std::initializer_list<T>::const_iterator;
+    std::function<void(iter, iter, iter, iter, NodePtr&, bool)> gen = [=, &gen]
+    (iter preBegin, iter preEnd, iter inBegin, iter inEnd, NodePtr &parent, bool left)
     {
         if (!(preBegin < preEnd) || !(inBegin < inEnd))
             return;
@@ -260,6 +265,33 @@ inline auto BiTree<T>::PostOrder2() const -> void
 }
 
 template<typename T>
+inline auto BiTree<T>::PostOrder3() const -> void
+{
+    DebugFunc;
+    if (!m_root)
+        return;
+    SqStack<NodePtr> s;
+    s.Push(m_root);
+    NodePtr cur = nullptr;
+    NodePtr pre = nullptr;
+    while (!s.IsEmpty())
+    {
+        cur = s.Top();
+        if ((!cur->lc && !cur->rc) || (pre && (pre == cur->lc || pre == cur->rc)))
+        {
+            VISIT(cur);
+            pre = cur;
+            s.Pop();
+            continue;
+        }
+        if (cur->rc)
+            s.Push(cur->rc);
+        if (cur->lc)
+            s.Push(cur->lc);
+    }
+}
+
+template<typename T>
 inline auto BiTree<T>::LevelOrder() const -> void
 {
     if (!m_root)
@@ -278,3 +310,5 @@ inline auto BiTree<T>::LevelOrder() const -> void
             q[++rear] = p->rc;
     }
 }
+
+template class BiTree<int>;

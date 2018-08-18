@@ -9,6 +9,7 @@
 #include "LinkQueue.h"
 #include "Calculator.h"
 #include "BiTree.h"
+#include "ThreadTree.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -144,7 +145,7 @@ auto ZXXXE::Test::Recursion() -> void
 
 auto ZXXXE::Test::TestTree() -> void
 {
-    BiTree<int> tree;
+    
     //int lst[] = { 1,2,3,4,0,0,5,0,0,6,0,0,7,8,10,0,0,0,9,0,0 };
     //           5
     //        /    \
@@ -156,13 +157,19 @@ auto ZXXXE::Test::TestTree() -> void
     //      3   6        11     
     //      
     int lst[] = { 5,4,2,0,3,0,0,0,9,7,6,0,0,0,10,0,11,0,0 };
+    BiTree<int> tree;
     tree.GenerateByPreAndIn(
         { 5,4,2,3,9,7,6,10,11 }, 
         { 2,3,4,5,6,7,9,10,11 });
     //tree.Generate(begin(lst), end(lst));
-    tree.PreOrder2();
-    tree.InOrder2();
-    tree.LevelOrder();
-    tree.PostOrder2();
+    
+    //tree.PreOrder2();
+    //tree.InOrder2();
+    //tree.LevelOrder();
+    tree.PostOrder3();
+    //ThreadTree<int> tree;
+    //tree.Generate(begin(lst), end(lst));
+    //tree.InOrder();
+    //tree.InOrder2();
 }
 
