@@ -9,8 +9,8 @@ struct ThreadNode
 };
 
 #ifndef VISIT
-#define VISIT(node)                 { \
-        if (node)                   \
+#define VISIT(node)                 {   \
+        if (node)                       \
             DebugVar(node->data);   }
 #endif // VISIT
 
@@ -22,16 +22,25 @@ class ThreadTree
 public:
     ThreadTree() = default;
     ~ThreadTree();
-    auto Generate(ConstPtr begin, ConstPtr end)->void;
-    auto InOrder()->void;
-    auto InOrder2()->void;
-    auto FirstNode(NodePtr node);
-    auto EndNode(NodePtr node);
-    auto NextNode(NodePtr node);
-    auto PreNode(NodePtr node);
+    // This function generate a tree by preorder sequences.
+    auto Generate(ConstPtr begin, ConstPtr end);
+    // This function must be called after function PreThread().
+    auto PreOrder();
+    auto PreThread();
+    // This function must be called after function InThread().
+    auto InOrder();
+    auto InThread();
+    // The body of this function is empty, because PostThread() is noneffective.
+    auto PostOrder();
+    auto PostThread();
 private:
     const unsigned MAXSIZE = 100;
-    auto inOrder(NodePtr &node, NodePtr &pre)->void;
+private:
+    auto preThread(NodePtr &node, NodePtr &pre);
+    auto inThread(NodePtr &node, NodePtr &pre);
+    auto postThread(NodePtr &node, NodePtr &pre);
+private:
+
     void free(NodePtr &node);
     NodePtr m_root = nullptr;
 };
@@ -43,7 +52,7 @@ inline ThreadTree<T>::~ThreadTree()
 }
 
 template<typename T>
-inline auto ThreadTree<T>::Generate(ConstPtr begin, ConstPtr end) -> void
+inline auto ThreadTree<T>::Generate(ConstPtr begin, ConstPtr end)
 {
     std::function<void(NodePtr&, ConstPtr&, ConstPtr)>
         generate = [&generate](NodePtr &node, ConstPtr &begin, ConstPtr end)
@@ -60,69 +69,95 @@ inline auto ThreadTree<T>::Generate(ConstPtr begin, ConstPtr end) -> void
 }
 
 template<typename T>
-inline auto ThreadTree<T>::InOrder() -> void
+inline auto ThreadTree<T>::PreThread()
 {
     if (!m_root)
         return;
     NodePtr pre = nullptr;
-    inOrder(m_root, pre);
+    preThread(m_root, pre);
     pre->rc = nullptr;
     pre->rtag = 1;
 }
 
-// This function must be called after function InOrder().
 template<typename T>
-inline auto ThreadTree<T>::InOrder2() -> void
+inline auto ThreadTree<T>::PreOrder()
 {
     DebugFunc;
-    for (auto p = FirstNode(m_root); p; p = NextNode(p))
+    auto firstNode = [=] {
+        return m_root;
+    };
+    auto nextNode = [](NodePtr node) {
+        if (node->ltag == 0)
+            return node->lc;
+        return node->rc;
+    };
+    for (auto p = firstNode(); p; p = nextNode(p))
     {
         VISIT(p);
     }
-    //for (auto p = EndNode(m_root); p; p = PreNode(p))
-    //{
-    //    VISIT(p);
-    //}
 }
 
 template<typename T>
-inline auto ThreadTree<T>::FirstNode(NodePtr node)
+inline auto ThreadTree<T>::InThread()
 {
-    while (node->ltag == 0)
-        node = node->lc;
-    return node;
+    if (!m_root)
+        return;
+    NodePtr pre = nullptr;
+    inThread(m_root, pre);
+    pre->rc = nullptr;
+    pre->rtag = 1;
 }
 
 template<typename T>
-inline auto ThreadTree<T>::EndNode(NodePtr node)
+inline auto ThreadTree<T>::InOrder()
 {
-    while (node->rtag == 0)
-        node = node->rc;
-    return node;
+    DebugFunc;
+    auto firstNode = [](NodePtr node) {
+        while (node->ltag == 0)
+            node = node->lc;
+        return node;
+    };
+    auto endNode = [](NodePtr node) {
+        while (node->rtag == 0)
+            node = node->rc;
+        return node;
+    };
+    auto nextNode = [&](NodePtr node) {
+        if (node->rtag == 1)
+            return node->rc;
+        return firstNode(node->rc);
+    };
+    auto preNode = [&](NodePtr node) {
+        if (node->ltag == 1)
+            return node->lc;
+        return endNode(node->lc);
+    };
+    for (auto p = firstNode(m_root); p; p = nextNode(p))
+    {
+        VISIT(p);
+    }
 }
 
 template<typename T>
-inline auto ThreadTree<T>::NextNode(NodePtr node)
+inline auto ThreadTree<T>::PostThread()
 {
-    if (node->rtag == 1)
-        return node->rc;
-    return FirstNode(node->rc);
+    if (!m_root)
+        return;
+    NodePtr pre = nullptr;
+    postThread(m_root, pre);
+    pre->rc = nullptr;
+    pre->rtag = 1;
 }
 
 template<typename T>
-inline auto ThreadTree<T>::PreNode(NodePtr node)
-{
-    if (node->ltag == 1)
-        return node->lc;
-    return EndNode(node->lc);
-}
+inline auto ThreadTree<T>::PostOrder()
+{}
 
 template<typename T>
-inline auto ThreadTree<T>::inOrder(NodePtr & node, NodePtr & pre) -> void
+inline auto ThreadTree<T>::preThread(NodePtr & node, NodePtr & pre)
 {
     if (!node)
         return;
-    inOrder(node->lc, pre);
     VISIT(node);
     if (!node->lc)
     {
@@ -135,7 +170,52 @@ inline auto ThreadTree<T>::inOrder(NodePtr & node, NodePtr & pre) -> void
         pre->rtag = 1;
     }
     pre = node;
-    inOrder(node->rc, pre);
+    if (node->ltag == 0)
+        preThread(node->lc, pre);
+    if (node->rtag == 0)
+        preThread(node->rc, pre);
+}
+
+template<typename T>
+inline auto ThreadTree<T>::inThread(NodePtr & node, NodePtr & pre)
+{
+    if (!node)
+        return;
+    inThread(node->lc, pre);
+    VISIT(node);
+    if (!node->lc)
+    {
+        node->lc = pre;
+        node->ltag = 1;
+    }
+    if (pre && !pre->rc)
+    {
+        pre->rc = node;
+        pre->rtag = 1;
+    }
+    pre = node;
+    inThread(node->rc, pre);
+}
+
+template<typename T>
+inline auto ThreadTree<T>::postThread(NodePtr & node, NodePtr & pre)
+{
+    if (!node)
+        return;
+    inThread(node->lc, pre);
+    inThread(node->rc, pre);
+    VISIT(node);
+    if (!node->lc)
+    {
+        node->lc = pre;
+        node->ltag = 1;
+    }
+    if (pre && !pre->rc)
+    {
+        pre->rc = node;
+        pre->rtag = 1;
+    }
+    pre = node;
 }
 
 template<typename T>

@@ -157,19 +157,21 @@ auto ZXXXE::Test::TestTree() -> void
     //      3   6        11     
     //      
     int lst[] = { 5,4,2,0,3,0,0,0,9,7,6,0,0,0,10,0,11,0,0 };
-    BiTree<int> tree;
-    tree.GenerateByPreAndIn(
-        { 5,4,2,3,9,7,6,10,11 }, 
-        { 2,3,4,5,6,7,9,10,11 });
+    //BiTree<int> tree;
+    //tree.GenerateByPreAndIn(
+    //    { 5,4,2,3,9,7,6,10,11 }, 
+    //    { 2,3,4,5,6,7,9,10,11 });
     //tree.Generate(begin(lst), end(lst));
     
     //tree.PreOrder2();
     //tree.InOrder2();
     //tree.LevelOrder();
-    tree.PostOrder3();
-    //ThreadTree<int> tree;
-    //tree.Generate(begin(lst), end(lst));
-    //tree.InOrder();
-    //tree.InOrder2();
+    //tree.PostOrder3();
+    ThreadTree<int> threadTree;
+    threadTree.Generate(begin(lst), end(lst));
+    //threadTree.InThread();
+    //threadTree.InOrder();
+    threadTree.PreThread();
+    threadTree.PreOrder();
 }
 
