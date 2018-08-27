@@ -22,7 +22,7 @@ class ThreadTree
 public:
     ThreadTree() = default;
     ~ThreadTree();
-    // This function generate a tree by preorder sequences.
+    /*This function generate a tree by preorder sequences.*/
     auto Generate(ConstPtr begin, ConstPtr end);
     // This function must be called after function PreThread().
     auto PreOrder();

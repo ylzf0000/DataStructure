@@ -145,8 +145,6 @@ auto ZXXXE::Test::Recursion() -> void
 
 auto ZXXXE::Test::TestTree() -> void
 {
-    
-    //int lst[] = { 1,2,3,4,0,0,5,0,0,6,0,0,7,8,10,0,0,0,9,0,0 };
     //           5
     //        /    \
     //       /      \
@@ -157,21 +155,25 @@ auto ZXXXE::Test::TestTree() -> void
     //      3   6        11     
     //      
     int lst[] = { 5,4,2,0,3,0,0,0,9,7,6,0,0,0,10,0,11,0,0 };
-    //BiTree<int> tree;
-    //tree.GenerateByPreAndIn(
-    //    { 5,4,2,3,9,7,6,10,11 }, 
-    //    { 2,3,4,5,6,7,9,10,11 });
+    BiTree<int> tree;
+    tree.GenerateByPreAndIn(
+        { 5,4,2,3,9,7,6,10,11 },
+        { 2,3,4,5,6,7,9,10,11 });
     //tree.Generate(begin(lst), end(lst));
-    
+    DebugVar(tree.CountLeaf());
+    DebugVar(tree.Depth());
+    decltype(tree) treeCopy;
+    tree.Copy(treeCopy);
+    treeCopy.PreOrder();
     //tree.PreOrder2();
     //tree.InOrder2();
     //tree.LevelOrder();
     //tree.PostOrder3();
-    ThreadTree<int> threadTree;
-    threadTree.Generate(begin(lst), end(lst));
+    //ThreadTree<int> threadTree;
+    //threadTree.Generate(begin(lst), end(lst));
     //threadTree.InThread();
     //threadTree.InOrder();
-    threadTree.PreThread();
-    threadTree.PreOrder();
+    //threadTree.PreThread();
+    //threadTree.PreOrder();
 }
 

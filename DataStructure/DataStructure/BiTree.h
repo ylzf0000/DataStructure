@@ -7,6 +7,8 @@ struct BiNode
     T data = T();
     BiNode *lc = nullptr;
     BiNode *rc = nullptr;
+    BiNode(T _data, BiNode *_lc = nullptr, BiNode *_rc = nullptr) :data(_data), lc(_lc), rc(_rc) {}
+    //BiNode(const BiNode &node):data(node.data),lc
 };
 constexpr unsigned MAXSIZE = 100;
 
@@ -27,6 +29,10 @@ public:
     ~BiTree();
     auto GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList)->void;
     auto Generate(ConstPtr begin, ConstPtr end)->void;
+    /* Count the number of leaf nodes in this BiTree. */
+    auto CountLeaf()const->int;
+    auto Depth()const->int;
+    auto Copy(BiTree &newTree)const;
     auto Order(OrderEnum o)const->void;
     auto PreOrder()const->void;
     auto PreOrder2()const->void;
@@ -48,6 +54,7 @@ private:
 template<typename T>
 inline BiTree<T>::~BiTree()
 {
+    DebugFunc;
     free(m_root);
 }
 
@@ -55,8 +62,10 @@ template<typename T>
 inline auto BiTree<T>::GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList) -> void
 {
     using iter = typename std::initializer_list<T>::const_iterator;
-    std::function<void(iter, iter, iter, iter, NodePtr&, bool)> gen = [=, &gen]
-    (iter preBegin, iter preEnd, iter inBegin, iter inEnd, NodePtr &parent, bool left)
+    using funcType = std::function<void(iter, iter, iter, iter, NodePtr&, bool)>;
+    /*сп╢Щ╦д╫Ь*/
+    funcType gen = [=, &gen](iter preBegin, iter preEnd, iter inBegin, iter inEnd, 
+        NodePtr &parent, bool left)
     {
         if (!(preBegin < preEnd) || !(inBegin < inEnd))
             return;
@@ -133,7 +142,7 @@ void BiTree<T>::free(NodePtr & node)
     {
         free(node->lc);
         free(node->rc);
-        DebugVar(node->data);
+        //DebugVar(node->data);
         delete node;
         node = nullptr;
     }
@@ -154,6 +163,58 @@ auto BiTree<T>::Generate(ConstPtr begin, ConstPtr end) -> void
         generate(node->rc, ++begin, end);
     };
     generate(m_root, begin, end);
+}
+
+template<typename T>
+inline auto BiTree<T>::CountLeaf() const -> int
+{
+    std::function<void(NodePtr, int&)> preFunc = [&preFunc]
+    (NodePtr node, int &count) {
+        if (!node)
+            return;
+        if ((!node->lc) && (!node->rc))
+            ++count;
+        preFunc(node->lc, count);
+        preFunc(node->rc, count);
+    };
+    int n = 0;
+    preFunc(m_root, n);
+    return n;
+}
+
+template<typename T>
+inline auto BiTree<T>::Depth() const -> int
+{
+    std::function<int(NodePtr)> depth = [&depth]
+    (NodePtr node) {
+        if (!node)
+            return 0;
+        int ld = depth(node->lc);
+        int rd = depth(node->rc);
+        return 1 + (ld > rd ? ld : rd);
+
+    };
+    return depth(m_root);
+}
+
+template<typename T>
+inline auto BiTree<T>::Copy(BiTree & newTree) const
+{
+    auto copyNode = [](T val, NodePtr lc, NodePtr rc) {
+        NodePtr newNode = new Node{ val,lc,rc };
+        return newNode;
+    };
+    std::function<NodePtr(ConstNodePtr)> copyTree =
+        [&copyNode, &copyTree](ConstNodePtr node)->NodePtr {
+        if (!node)
+            return nullptr;
+        NodePtr lChild = node->lc ? copyTree(node->lc) : nullptr;
+        NodePtr rChild = node->rc ? copyTree(node->rc) : nullptr;
+        return copyNode(node->data, lChild, rChild);
+    };
+    if (!m_root)
+        return;
+    newTree.m_root = copyTree(m_root);
 }
 
 template<typename T>
