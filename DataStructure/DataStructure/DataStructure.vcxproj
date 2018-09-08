@@ -120,6 +120,7 @@
     <ClInclude Include="BiTree.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="DLinkList.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="LinkBase.h" />
     <ClInclude Include="LinkList.h" />
     <ClInclude Include="LinkQueue.h" />
