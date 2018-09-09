@@ -202,5 +202,7 @@ auto ZXXXE::Test::TestGraph()->void
     DFSTraverse(alg);
     cout << endl;
     DFSTraverse(mg);
+    cout << endl;
+    BFSTraverse(mg);
 }
 

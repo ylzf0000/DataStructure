@@ -28,28 +28,30 @@ struct Edge
 template<typename ET = int>
 class MGraph
 {
+public:
+    using EVT = ET;
 private:
     MGraph();
 public:
     template<unsigned N>
     MGraph(ET(&mat)[N][N]);
-    auto adjacent(int x, int y)->ET;
-    auto neighbor(int x)->std::vector<Edge<ET>>;
+    auto adjacent(int x, int y)const->ET;
+    auto neighbor(int x)const->std::vector<Edge<ET>>;
     /*Function insertVertex and deleteVertex is empty.*/
     auto insertVertex(int x);
     auto deleteVertex(int x);
     auto addEdge(int x, int y, ET val = 1);
     auto removeEdge(int x, int y);
-    auto firstNeighbor(int x)->int;
-    auto nextNeighbor(int x, int y)->int;
-    auto edgeValue(int x, int y)->ET&;
+    auto firstNeighbor(int x)const->int;
+    auto nextNeighbor(int x, int y)const->int;
+    auto edgeValue(int x, int y)const->ET;
     int Vnum() const { return m_vnum; }
 private:
     void Vnum(int val) { m_vnum = val; }
     ET m_edge[MAX_G_ENUM][MAX_G_ENUM];
     int m_vnum;
 };
-template class MGraph<>;
+template class MGraph<int>;
 /************************************************************************/
 /*    Class        : Adjacency List                                     */
 /*    Template Type: Vertex Type and Edge Type                          */
@@ -58,6 +60,7 @@ template<typename ET = int>
 class ALGraph
 {
 public:
+    using EVT = ET;
     struct ANode;
     struct VNode
     {
@@ -73,22 +76,22 @@ public:
 public:
     template<unsigned N>
     ALGraph(ET(&mat)[N][N]);
-    auto adjacent(int x, int y)->ET;
-    auto neighbor(int x)->std::vector<Edge<ET>>;
+    auto adjacent(int x, int y)const->ET;
+    auto neighbor(int x)const->std::vector<Edge<ET>>;
     /*Function insertVertex and deleteVertex is empty.*/
-    auto insertVertex(int x);
-    auto deleteVertex(int x);
+    //auto insertVertex(int x);
+    //auto deleteVertex(int x);
     auto addEdge(int x, int y, ET val = 1);
     auto removeEdge(int x, int y);
-    auto firstNeighbor(int x)->int;
-    auto nextNeighbor(int x, int y)->int;
-    auto edgeValue(int x, int y)->ET&;
+    auto firstNeighbor(int x)const->int;
+    auto nextNeighbor(int x, int y)const->int;
+    auto edgeValue(int x, int y)const->ET;
 private:
     void Vnum(int val) { m_vnum = val; }
     VNode  m_list[MAX_G_VNUM];
     int m_vnum;
 };
-template class ALGraph<>;
+template class ALGraph<int>;
 
 template<typename ET>
 inline MGraph<ET>::MGraph()
@@ -104,24 +107,14 @@ inline MGraph<ET>::MGraph()
     }
 }
 
-//template<typename ET>
-//inline MGraph<ET>::MGraph(int vnum, ET ** mat)
-//{
-//    for (int i = 0; t < vnum; ++i)
-//        for (int j = 0; j < vnum; ++j)
-//        {
-//            m_edge[i][j] = mat[i][j];
-//        }
-//}
-
 template<typename ET>
-inline auto MGraph<ET>::adjacent(int x, int y) -> ET
+inline auto MGraph<ET>::adjacent(int x, int y)const -> ET
 {
     return m_edge[x][y];
 }
 
 template<typename ET>
-inline auto MGraph<ET>::neighbor(int x) -> std::vector<Edge<ET>>
+inline auto MGraph<ET>::neighbor(int x)const -> std::vector<Edge<ET>>
 {
     DebugFunc;
     std::vector<Edge<ET>> vec;
@@ -157,7 +150,7 @@ inline auto MGraph<ET>::removeEdge(int x, int y)
 }
 
 template<typename ET>
-inline auto MGraph<ET>::firstNeighbor(int x) -> int
+inline auto MGraph<ET>::firstNeighbor(int x) const-> int
 {
     for (int i = 0; i < Vnum(); ++i)
     {
@@ -169,7 +162,7 @@ inline auto MGraph<ET>::firstNeighbor(int x) -> int
 }
 
 template<typename ET>
-inline auto MGraph<ET>::nextNeighbor(int x, int y)->int
+inline auto MGraph<ET>::nextNeighbor(int x, int y)const->int
 {
     for (int i = y + 1; i < Vnum(); ++i)
     {
@@ -181,7 +174,7 @@ inline auto MGraph<ET>::nextNeighbor(int x, int y)->int
 }
 
 template<typename ET>
-inline auto MGraph<ET>::edgeValue(int x, int y) -> ET &
+inline auto MGraph<ET>::edgeValue(int x, int y)const -> ET
 {
     return m_edge[x][y];
 }
@@ -199,7 +192,7 @@ inline MGraph<ET>::MGraph(ET(&mat)[N][N])
 }
 
 template<typename ET>
-inline auto ALGraph<ET>::adjacent(int x, int y) -> ET
+inline auto ALGraph<ET>::adjacent(int x, int y)const -> ET
 {
     for (ANode * node = m_list[x].first; node; node = node->next)
     {
@@ -210,7 +203,7 @@ inline auto ALGraph<ET>::adjacent(int x, int y) -> ET
 }
 
 template<typename ET>
-inline auto ALGraph<ET>::neighbor(int x) -> std::vector<Edge<ET>>
+inline auto ALGraph<ET>::neighbor(int x)const -> std::vector<Edge<ET>>
 {
     std::vector<Edge<ET>> vec;
     for (ANode *node = m_list[x].first; node; node = node->next)
@@ -244,7 +237,7 @@ inline auto ALGraph<ET>::removeEdge(int x, int y)
 }
 
 template<typename ET>
-inline auto ALGraph<ET>::firstNeighbor(int x) -> int
+inline auto ALGraph<ET>::firstNeighbor(int x)const -> int
 {
     ANode *node = m_list[x].first;
     if (!node)
@@ -253,7 +246,7 @@ inline auto ALGraph<ET>::firstNeighbor(int x) -> int
 }
 
 template<typename ET>
-inline auto ALGraph<ET>::nextNeighbor(int x, int y) -> int
+inline auto ALGraph<ET>::nextNeighbor(int x, int y)const -> int
 {
     static int lastX = x;
     static ANode *lastNode = m_list[x].first;
@@ -272,13 +265,14 @@ inline auto ALGraph<ET>::nextNeighbor(int x, int y) -> int
 }
 
 template<typename ET>
-inline auto ALGraph<ET>::edgeValue(int x, int y) -> ET &
+inline auto ALGraph<ET>::edgeValue(int x, int y)const -> ET
 {
     for (ANode *node = m_list[x].first; node; node = node->next)
     {
         if (node->adjvex == y)
             return node->val;
     }
+    return -1;
 }
 
 template<typename ET>
