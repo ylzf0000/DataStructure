@@ -45,3 +45,6 @@ namespace ZXXXE
 		using ConstNodeRef = const NODE &;	\
 		using NodePtr = NODE * ;			\
 		using ConstNodePtr = const NODE *
+
+
+#define CONTAINER(x) begin(x), end(x)

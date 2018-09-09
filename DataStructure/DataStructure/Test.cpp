@@ -195,8 +195,12 @@ auto ZXXXE::Test::TestGraph()->void
         { INF,1,  1,   INF, 0   }
     };
     MGraph<int> mg(mat);
-    auto vec = mg.neighbor(2);
-    std::for_each(vec.begin(), vec.end(), [](auto e) {cout << e; });
-
+    ALGraph<int> alg(mat);
+    //auto vec = mg.neighbor(2);
+    auto vec = alg.neighbor(2);
+    std::for_each(CONTAINER(vec), [](auto e) {cout << e; });
+    DFSTraverse(alg);
+    cout << endl;
+    DFSTraverse(mg);
 }
 
