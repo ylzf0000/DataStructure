@@ -10,6 +10,7 @@
 #include "Calculator.h"
 #include "BiTree.h"
 #include "ThreadTree.h"
+#include "Graph.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -22,7 +23,8 @@ ZXXXE::Test::Test()
     //TestStack();
     //this->Calculate("#1+2-3*((4+5)*3-1)+2#");
     //Recursion();
-    TestTree();
+    //TestTree();
+    TestGraph();
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()
@@ -175,5 +177,26 @@ auto ZXXXE::Test::TestTree() -> void
     //threadTree.InOrder();
     //threadTree.PreThread();
     //threadTree.PreOrder();
+}
+
+auto ZXXXE::Test::TestGraph()->void
+{
+    //  0-------1----\
+    //  |       |    |
+    //  |       |    |
+    //  |       |    |
+    //  3-------2----4
+    int mat[][5] =
+    {
+        { 0,  1,  INF, 1,   INF },
+        { 1,  0,  1,   INF, 1   },
+        { INF,1,  0,   1,   1   },
+        { 1,  INF,1,   0,   INF },
+        { INF,1,  1,   INF, 0   }
+    };
+    MGraph<int> mg(mat);
+    auto vec = mg.neighbor(2);
+    std::for_each(vec.begin(), vec.end(), [](auto e) {cout << e; });
+
 }
 

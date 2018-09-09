@@ -14,5 +14,6 @@ namespace ZXXXE
 		auto Calculate(const string &s)->double;
 		auto Recursion()->void;
         auto TestTree()->void;
+        auto TestGraph()->void;
 	};
 }
