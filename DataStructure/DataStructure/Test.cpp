@@ -188,11 +188,24 @@ auto ZXXXE::Test::TestGraph()->void
     //  3-------2----4
     int mat[][5] =
     {
-        { 0,  1,  INF, 1,   INF },
-        { 1,  0,  1,   INF, 1   },
-        { INF,1,  0,   1,   1   },
-        { 1,  INF,1,   0,   INF },
-        { INF,1,  1,   INF, 0   }
+        { 0,   1,  INF, 1,   INF },
+        { 1,   0,  1,   INF, 1   },
+        { INF, 1,  0,   1,   1   },
+        { 1,   INF,1,   0,   INF },
+        { INF, 1,  1,   INF, 0   }
+    };
+    //  0------>1\
+    //  |         \  
+    //  |          > 4
+    // \|/        /   
+    //  3------>2/
+    int mat2[][5] =
+    {
+        { 0,   1,   INF, 1,   INF },
+        { INF, 0,   INF, INF, 1   },
+        { INF, INF, 0,   INF, 1   },
+        { INF, INF, 1,   0,   INF },
+        { INF, INF, INF, INF, 0   }
     };
     MGraph<int> mg(mat);
     ALGraph<int> alg(mat);
@@ -204,5 +217,7 @@ auto ZXXXE::Test::TestGraph()->void
     DFSTraverse(mg);
     cout << endl;
     BFSTraverse(mg);
+    cout << endl;
+    TopSort(MGraph<int>(mat2), 0);
 }
 

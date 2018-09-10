@@ -65,6 +65,21 @@ void BFSTraverse(const G &g)
         }
 }
 
+//Õÿ∆À≈≈–Ú
+template<typename G>
+void TopSort(const G &g, int cur)
+{
+    bool visited[MAX_G_VNUM] = { false };
+    int q[MAX_G_VNUM] = { 0 };
+    int size = -1;
+    _ZXXXE::TopologicalSort(g, cur, visited, q, size);
+    for (int i = size; i >= 0; --i)
+    {
+        int cur = q[i];
+        DebugVar(cur);
+    }
+}
+
 namespace _ZXXXE
 {
     template<typename G>
@@ -82,7 +97,22 @@ namespace _ZXXXE
     }
 
     template<typename G>
-    void BFS(G &g, int cur, bool(&visited)[MAX_G_VNUM])
+    void TopologicalSort(const G &g, int cur, bool(&visited)[MAX_G_VNUM], int *queue, int &q_cur)
+    {
+        visited[cur] = true;
+        for (int i = g.firstNeighbor(cur); i != -1; i = g.nextNeighbor(cur, i))
+        {
+            if (!visited[i])
+            {
+                TopologicalSort(g, i, visited, queue, q_cur);
+            }
+        }
+        queue[++q_cur] = cur;
+        //DebugVar(cur);
+    }
+
+    template<typename G>
+    void BFS(const G &g, int cur, bool(&visited)[MAX_G_VNUM])
     {
         int q[MAX_G_VNUM] = { 0 };
         int front = 0, tail = -1;
