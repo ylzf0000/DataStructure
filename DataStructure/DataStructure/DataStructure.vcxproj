@@ -130,12 +130,14 @@
     <ClInclude Include="SqQueue.h" />
     <ClInclude Include="SqStack.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="String.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="ThreadTree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="String.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

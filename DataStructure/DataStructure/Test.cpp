@@ -11,6 +11,7 @@
 #include "BiTree.h"
 #include "ThreadTree.h"
 #include "Graph.h"
+#include "String.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -24,7 +25,8 @@ ZXXXE::Test::Test()
     //this->Calculate("#1+2-3*((4+5)*3-1)+2#");
     //Recursion();
     //TestTree();
-    TestGraph();
+    //TestGraph();
+    TestString();
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()
@@ -219,5 +221,17 @@ auto ZXXXE::Test::TestGraph()->void
     BFSTraverse(mg);
     cout << endl;
     TopSort(MGraph<int>(mat2), 0);
+}
+
+auto ZXXXE::Test::TestString() -> void
+{
+    char str[] = "12354321233215434";
+    char pattern[] = "1233";
+    int next[5];
+    DebugVar(naiveSearch(str, pattern));
+    //getNext(pattern, next);
+    getNextval(pattern, next);
+    for_each(CONTAINER(next), [](auto e) {cout << e; });
+    DebugVar(kmp(str, pattern, next));
 }
 

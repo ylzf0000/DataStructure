@@ -15,5 +15,6 @@ namespace ZXXXE
 		auto Recursion()->void;
         auto TestTree()->void;
         auto TestGraph()->void;
+        auto TestString()->void;
 	};
 }
