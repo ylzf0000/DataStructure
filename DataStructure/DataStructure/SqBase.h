@@ -11,16 +11,16 @@ class SqBase
 public:
 	SqBase();
 	~SqBase();
-	template <int C = 0>
-	auto AssertRange(int i) const -> void
-	{
-		assert(i >= 0 && i < m_length);
-	}
-	template <>
-	auto AssertRange<1>(int i) const -> void
-	{
-		assert(i >= 0 && i <= m_length);
-	}
+	//template <int C = 0>
+	//auto AssertRange(int i) const -> void
+	//{
+	//	assert(i >= 0 && i < m_length);
+	//}
+	//template <>
+	//auto AssertRange<1>(int i) const -> void
+	//{
+	//	assert(i >= 0 && i <= m_length);
+	//}
 	auto Free() -> void;
 	auto Expend() -> void;
 	const int INIT_SIZE = 1000;

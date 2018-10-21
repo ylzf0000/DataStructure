@@ -26,7 +26,8 @@ ZXXXE::Test::Test()
     //Recursion();
     //TestTree();
     //TestGraph();
-    TestString();
+    //TestString();
+    TestSort();
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()
@@ -233,5 +234,26 @@ auto ZXXXE::Test::TestString() -> void
     getNextval(pattern, next);
     for_each(CONTAINER(next), [](auto e) {cout << e; });
     DebugVar(kmp(str, pattern, next));
+}
+
+auto ZXXXE::Test::TestSort() -> void
+{
+    int a[13];
+    int n = end(a) - begin(a);
+    int _;
+    while (cin >> _)
+    {
+        for (int i = 0; i < n; ++i)
+        {
+            RandInt rand(0, 100);
+            a[i] = rand();
+        }
+        PRINT_CONT(a);
+        int k = RandInt(0, n)();
+        DebugVar(k);
+        _ZXXXE::kBigHeapSort(a, n, k);
+        HeapSort(a);
+    }
+
 }
 

@@ -80,6 +80,14 @@ void TopSort(const G &g, int cur)
     }
 }
 
+template<unsigned N, typename T>
+void HeapSort(T(&a)[N])
+{
+    PRINT_CONT(a);
+    _ZXXXE::heapSort(a, N);
+    PRINT_CONT(a);
+}
+
 namespace _ZXXXE
 {
     template<typename G>
@@ -133,7 +141,56 @@ namespace _ZXXXE
                 }
             }
         }
+    }
 
+    void shift(int a[], int left, int right)
+    {
+        int tmp = a[left];
+        int i = left;
+        int j = i * 2 + 1;
+        for (; j <= right; i = j, j = i * 2 + 1)
+        {
+            if (j + 1 <= right && a[j] < a[j + 1])
+                ++j;
+            if (tmp < a[j])
+                a[i] = a[j];
+            else
+                break;
+        }
+        a[i] = tmp;
+    }
+
+    void heapSort(int a[], int n)
+    {
+        for (int i = n / 2 - 1; i >= 0; --i)
+        {
+            shift(a, i, n - 1);
+        }
+        for (int i = 0; i < n - 1; ++i)
+        {
+            int j = n - i - 1;
+            int tmp = a[0];
+            a[0] = a[j];
+            a[j] = tmp;
+            shift(a, 0, j - 1);
+        }
+    }
+
+    void kBigHeapSort(int a[], int n, int k)
+    {
+        for (int i = n / 2 - 1; i >= 0; --i)
+        {
+            shift(a, i, n - 1);
+        }
+        for (int i = 0; i < k; ++i)
+        {
+            int j = n - i - 1;
+            int tmp = a[0];
+            a[0] = a[j];
+            a[j] = tmp;
+            shift(a, 0, j - 1);
+        }
+        DebugVar(a[n - k]);
     }
 }
 

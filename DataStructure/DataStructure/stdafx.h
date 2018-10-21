@@ -47,4 +47,9 @@ namespace ZXXXE
 		using ConstNodePtr = const NODE *
 
 
-#define CONTAINER(x) begin(x), end(x)
+#define CONTAINER(x) std::begin(x), std::end(x)
+#define PRINT_CONT(c)                      {            \
+    std::for_each(CONTAINER(c), [](auto e) {std::cout << e<<" "; });\
+    std::cout<<std::endl;                               \
+    }
+        

@@ -101,7 +101,7 @@ template<typename T>
 void LinkList<T>::HeadCreate()
 {
 	T val;
-	while (cin >> val)
+	while (std::cin >> val)
 	{
 		Node *node = new Node{ val };
 		node->next = m_headNode->next;
@@ -116,7 +116,7 @@ void LinkList<T>::TailCreate()
 	T val;
 	Node *tail = m_headNode;
 	//for (tail = m_headNode; tail->next; tail = tail->next);
-	while (cin >> val)
+	while (std::cin >> val)
 	{
 		Node *node = new Node{ val };
 		tail->next = node;
