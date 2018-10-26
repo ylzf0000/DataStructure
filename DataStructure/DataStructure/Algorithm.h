@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include <string>
 #include <iostream>
 #include "Graph.h"
@@ -84,7 +85,7 @@ template<unsigned N, typename T>
 void HeapSort(T(&a)[N])
 {
     PRINT_CONT(a);
-    _ZXXXE::heapSort(a, N);
+    //_ZXXXE::heapSort(a, N);
     PRINT_CONT(a);
 }
 
@@ -143,54 +144,75 @@ namespace _ZXXXE
         }
     }
 
-    void shift(int a[], int left, int right)
-    {
-        int tmp = a[left];
-        int i = left;
-        int j = i * 2 + 1;
-        for (; j <= right; i = j, j = i * 2 + 1)
-        {
-            if (j + 1 <= right && a[j] < a[j + 1])
-                ++j;
-            if (tmp < a[j])
-                a[i] = a[j];
-            else
-                break;
-        }
-        a[i] = tmp;
-    }
+    //void shift(int a[], int left, int right)
+    //{
+    //    int tmp = a[left];
+    //    int i = left;
+    //    int j = i * 2 + 1;
+    //    for (; j <= right; i = j, j = i * 2 + 1)
+    //    {
+    //        if (j + 1 <= right && a[j] < a[j + 1])
+    //            ++j;
+    //        if (tmp < a[j])
+    //            a[i] = a[j];
+    //        else
+    //            break;
+    //    }
+    //    a[i] = tmp;
+    //}
 
-    void heapSort(int a[], int n)
-    {
-        for (int i = n / 2 - 1; i >= 0; --i)
-        {
-            shift(a, i, n - 1);
-        }
-        for (int i = 0; i < n - 1; ++i)
-        {
-            int j = n - i - 1;
-            int tmp = a[0];
-            a[0] = a[j];
-            a[j] = tmp;
-            shift(a, 0, j - 1);
-        }
-    }
+    //void heapSort(int a[], int n)
+    //{
+    //    for (int i = n / 2 - 1; i >= 0; --i)
+    //    {
+    //        shift(a, i, n - 1);
+    //    }
+    //    for (int i = 0; i < n - 1; ++i)
+    //    {
+    //        int j = n - i - 1;
+    //        int tmp = a[0];
+    //        a[0] = a[j];
+    //        a[j] = tmp;
+    //        shift(a, 0, j - 1);
+    //    }
+    //}
 
-    void kBigHeapSort(int a[], int n, int k)
-    {
-        for (int i = n / 2 - 1; i >= 0; --i)
-        {
-            shift(a, i, n - 1);
-        }
-        for (int i = 0; i < k; ++i)
-        {
-            int j = n - i - 1;
-            int tmp = a[0];
-            a[0] = a[j];
-            a[j] = tmp;
-            shift(a, 0, j - 1);
-        }
-        DebugVar(a[n - k]);
-    }
+    //void kBigHeapSort(int a[], int n, int k)
+    //{
+    //    for (int i = n / 2 - 1; i >= 0; --i)
+    //    {
+    //        shift(a, i, n - 1);
+    //    }
+    //    for (int i = 0; i < k; ++i)
+    //    {
+    //        int j = n - i - 1;
+    //        int tmp = a[0];
+    //        a[0] = a[j];
+    //        a[j] = tmp;
+    //        shift(a, 0, j - 1);
+    //    }
+    //    DebugVar(a[n - k]);
+    //}
+
+    int partition(int a[], int low, int high);
+    void qsort(int a[], int low, int high);
+    int kBigNo(int a[], int low, int high, int k);
 }
 
+template<unsigned N>
+int Partition(int(&a)[N])
+{
+    return _ZXXXE::partition(a, 0, N - 1);
+}
+
+template<unsigned N>
+void Sort(int(&a)[N])
+{
+    _ZXXXE::qsort(a, 0, N - 1);
+}
+
+template<unsigned N>
+int kBigNo(int(&a)[N], int k)
+{
+    return _ZXXXE::kBigNo(a, 0, N - 1, k - 1);
+}

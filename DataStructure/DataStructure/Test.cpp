@@ -239,7 +239,7 @@ auto ZXXXE::Test::TestString() -> void
 auto ZXXXE::Test::TestSort() -> void
 {
     int a[13];
-    int n = end(a) - begin(a);
+    auto n = end(a) - begin(a);
     int _;
     while (cin >> _)
     {
@@ -248,11 +248,23 @@ auto ZXXXE::Test::TestSort() -> void
             RandInt rand(0, 100);
             a[i] = rand();
         }
+
         PRINT_CONT(a);
-        int k = RandInt(0, n)();
-        DebugVar(k);
-        _ZXXXE::kBigHeapSort(a, n, k);
-        HeapSort(a);
+        //Partition(a);
+        DebugVar(kBigNo(a, _));
+        Sort(a);
+        PRINT_CONT(a);
+        for (int i = 1; i < n; ++i)
+        {
+            if (a[i - 1] > a[i])
+            {
+                cout << "false" << endl;
+            }
+        }
+        //int k = RandInt(0, n)();
+        //DebugVar(k);
+        //_ZXXXE::kBigHeapSort(a, n, k);
+        //HeapSort(a);
     }
 
 }

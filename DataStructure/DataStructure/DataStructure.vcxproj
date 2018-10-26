@@ -135,6 +135,7 @@
     <ClInclude Include="ThreadTree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithm.cpp" />
     <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="String.cpp" />

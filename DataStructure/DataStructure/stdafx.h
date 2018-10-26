@@ -3,25 +3,25 @@
 
 namespace ZXXXE
 {
-	using namespace std;
+    using namespace std;
 
-	template<typename T>
-	struct TypeTrait
-	{
-		const T& operator()(const T &val)
-		{
-			return val;
-		}
-	};
+    template<typename T>
+    struct TypeTrait
+    {
+        const T& operator()(const T &val)
+        {
+            return val;
+        }
+    };
 
-	template<typename T>
-	struct DebugVarClass
-	{
-		void operator()(const char *str, const T &val, const char *funcName)
-		{
-			cout << "[" << funcName << "] " << str << ": " << val << endl;
-		}
-	};
+    template<typename T>
+    struct DebugVarClass
+    {
+        void operator()(const char *str, const T &val, const char *funcName)
+        {
+            cout << "[" << funcName << "] " << str << ": " << val << endl;
+        }
+    };
 }
 
 #define DebugVar(x) ZXXXE::DebugVarClass<decltype(x)>()(#x, ZXXXE::TypeTrait<decltype(x)>()(x),__func__)
@@ -49,7 +49,11 @@ namespace ZXXXE
 
 #define CONTAINER(x) std::begin(x), std::end(x)
 #define PRINT_CONT(c)                      {            \
-    std::for_each(CONTAINER(c), [](auto e) {std::cout << e<<" "; });\
+    std::for_each(CONTAINER(c),[](auto e){std::cout<<e<<" "; });\
     std::cout<<std::endl;                               \
     }
-        
+
+#define PRINT_CONTEX(c,a,b)                 {            \
+    std::for_each((c+a), (c+b),[](auto e){std::cout<<e<<" "; });\
+    std::cout<<std::endl;                               \
+    }
