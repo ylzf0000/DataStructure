@@ -1,6 +1,7 @@
 #include "Algorithm.h"
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 int _ZXXXE::partition(int a[], int low, int high)
 {
@@ -65,6 +66,60 @@ int _ZXXXE::kBigNo(int a[], int low, int high, int k)
     return a[i];
 }
 
+void _ZXXXE::printConbination(int n, int k)
+{
+    int *stack = new int[k + 1];
+    int top = k;
+    for (int i = 1; i <= k; ++i)
+        stack[i] = i;
+    while (top >= 1)
+    {
+        while (stack[top] > top + n - k)
+        {
+            --top;
+            ++stack[top];
+        }
+        if (top < 1)
+            break;
+        if (top == k)
+        {
+            for (int i = 1; i <= k; ++i)
+                cout << stack[i] << " ";
+            cout << endl;
+            ++stack[top];
+        }
+        else
+        {
+            stack[top + 1] = stack[top] + 1;
+            ++top;
+        }
+    }
+    delete[] stack;
+}
+
+void _ZXXXE::printConbination2(int n, int k)
+{
+    int *stack = new int[k + 1];
+    int top = k;
+    for (int i = 1; i <= k; ++i)
+        stack[i] = i;
+    while (true)
+    {
+        for (int i = 1; i <= k; ++i)
+            cout << stack[i] << " ";
+        cout << endl;
+        while (stack[top] >= top + n - k)
+            --top;
+        if (top < 1)
+            break;
+        ++stack[top];
+        for (int i = top + 1; i <= k; ++i)
+            stack[i] = stack[top] + i - top;
+        top = k;
+    }
+    delete[] stack;
+}
+
 void _ZXXXE::printConbinationRec(int n, int k, int r, int cur, int *arr)
 {
     arr[r] = cur;
@@ -80,6 +135,22 @@ void _ZXXXE::printConbinationRec(int n, int k, int r, int cur, int *arr)
     for (int i = cur + 1; i <= n; ++i)
     {
         printConbinationRec(n, k, r + 1, i, arr);
+    }
+}
+
+/*打印完全二叉树某一结点的子孙*/
+void _ZXXXE::printDescendant(int a[], int n, int x)
+{
+    int width = 1;
+    while (x <= n)
+    {
+        for (int i = 0; i < width && x + i <= n; ++i)
+        {
+            cout << a[x + i] << " ";
+        }
+        cout << endl;
+        width *= 2;
+        x *= 2;
     }
 }
 

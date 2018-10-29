@@ -28,7 +28,14 @@ ZXXXE::Test::Test()
     //TestGraph();
     //TestString();
     //TestSort();
-    PrintConbinationRec(4, 2);
+    //PrintConbinationRec(4, 2);
+    //_ZXXXE::printConbination2(7, 3);
+    constexpr int N = 31;
+    int *a = new int[N + 1]; 
+    for (int i = 1; i <= N; ++i)
+        a[i] = i;
+    _ZXXXE::printDescendant(a, N, 2);
+
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()

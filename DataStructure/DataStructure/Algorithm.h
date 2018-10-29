@@ -197,7 +197,11 @@ namespace _ZXXXE
     int partition(int a[], int low, int high);
     void qsort(int a[], int low, int high);
     int kBigNo(int a[], int low, int high, int k);
+    void printConbination(int n, int k);
+    void printConbination2(int n, int k);
     void printConbinationRec(int n, int k, int r, int cur, int *arr);
+    /*打印完全二叉树某一结点的子孙*/
+    void printDescendant(int a[], int n, int x);
 }
 
 template<unsigned N>
