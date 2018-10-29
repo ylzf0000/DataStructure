@@ -27,7 +27,8 @@ ZXXXE::Test::Test()
     //TestTree();
     //TestGraph();
     //TestString();
-    TestSort();
+    //TestSort();
+    PrintConbinationRec(4, 2);
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()

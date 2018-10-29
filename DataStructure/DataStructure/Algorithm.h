@@ -197,6 +197,7 @@ namespace _ZXXXE
     int partition(int a[], int low, int high);
     void qsort(int a[], int low, int high);
     int kBigNo(int a[], int low, int high, int k);
+    void printConbinationRec(int n, int k, int r, int cur, int *arr);
 }
 
 template<unsigned N>
@@ -216,3 +217,5 @@ int kBigNo(int(&a)[N], int k)
 {
     return _ZXXXE::kBigNo(a, 0, N - 1, k - 1);
 }
+
+void PrintConbinationRec(int n, int k);
