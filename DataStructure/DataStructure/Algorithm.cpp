@@ -163,3 +163,32 @@ void PrintConbinationRec(int n, int k)
     }
     delete[] arr;
 }
+
+
+struct Node
+{
+    int data;
+    Node *next;
+};
+/*将一个链表分为两个链表，一个包含奇数，另一个包含偶数*/
+void func(Node *&a, Node *&b)
+{
+    b = new Node{ 0, nullptr };
+    Node *p = a->next;
+    Node *pa = a, *pb = b;
+    while (p)
+    {
+        if (p->data % 2 == 0)
+        {
+            pb->next = p;
+            pb = p;
+        }
+        else
+        {
+            pa->next = p;
+            pa = p;
+        }
+        p = p->next;
+    }
+    pa->next = pb->next = nullptr;
+}
