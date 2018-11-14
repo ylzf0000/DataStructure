@@ -24,17 +24,17 @@ ZXXXE::Test::Test()
     //TestStack();
     //this->Calculate("#1+2-3*((4+5)*3-1)+2#");
     //Recursion();
-    //TestTree();
+    TestTree();
     //TestGraph();
     //TestString();
     //TestSort();
     //PrintConbinationRec(4, 2);
     //_ZXXXE::printConbination2(7, 3);
-    constexpr int N = 31;
-    int *a = new int[N + 1]; 
-    for (int i = 1; i <= N; ++i)
-        a[i] = i;
-    _ZXXXE::printDescendant(a, N, 2);
+    //constexpr int N = 31;
+    //int *a = new int[N + 1]; 
+    //for (int i = 1; i <= N; ++i)
+    //    a[i] = i;
+    //_ZXXXE::printDescendant(a, N, 2);
 
 }
 #define TEST 1
@@ -167,17 +167,22 @@ auto ZXXXE::Test::TestTree() -> void
     //     \     /       \
     //      3   6        11     
     //      
-    int lst[] = { 5,4,2,0,3,0,0,0,9,7,6,0,0,0,10,0,11,0,0 };
+    int lst[] =
+    //{ 5,4,2,12,0,0,3,0,0,0,9,7,6,0,0,0,10,0,11,0,0 };
+    { 1,2,4,0,0,5,0,10,0,0,3,6,13,0,0,14,0,0,7,11,0,0,12,0,0, };
+
     BiTree<int> tree;
-    tree.GenerateByPreAndIn(
-        { 5,4,2,3,9,7,6,10,11 },
-        { 2,3,4,5,6,7,9,10,11 });
-    //tree.Generate(begin(lst), end(lst));
-    DebugVar(tree.CountLeaf());
-    DebugVar(tree.Depth());
-    decltype(tree) treeCopy;
-    tree.Copy(treeCopy);
-    treeCopy.PreOrder();
+    //tree.GenerateByPreAndIn(
+    //    { 5,4,2,3,9,7,6,10,11 },
+    //    { 2,3,4,5,6,7,9,10,11 });
+
+    tree.Generate(CONTAINER(lst));
+    DebugVar(tree.Width());
+    //DebugVar(tree.CountLeaf());
+    //DebugVar(tree.Depth());
+    //decltype(tree) treeCopy;
+    //tree.Copy(treeCopy);
+    //treeCopy.PreOrder();
     //tree.PreOrder2();
     //tree.InOrder2();
     //tree.LevelOrder();

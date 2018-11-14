@@ -26,6 +26,8 @@ namespace ZXXXE
 
 #define DebugVar(x) ZXXXE::DebugVarClass<decltype(x)>()(#x, ZXXXE::TypeTrait<decltype(x)>()(x),__func__)
 
+#define Visit(x) DebugVar(x)
+
 #define DebugVarName(x) ZXXXE::DebugVarClass<decltype(x)>()(#x, __func__)
 
 #define DebugFunc (std::cout << "[" << __func__ << "]" << std::endl)

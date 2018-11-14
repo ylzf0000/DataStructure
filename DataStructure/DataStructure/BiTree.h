@@ -10,7 +10,7 @@ struct BiNode
     BiNode(T _data, BiNode *_lc = nullptr, BiNode *_rc = nullptr) :data(_data), lc(_lc), rc(_rc) {}
     //BiNode(const BiNode &node):data(node.data),lc
 };
-constexpr unsigned MAXSIZE = 100;
+constexpr unsigned MAXSIZE = 1024;
 
 #ifndef VISIT
 #define VISIT(node)           { \
@@ -32,6 +32,7 @@ public:
     /* Count the number of leaf nodes in this BiTree. */
     auto CountLeaf()const->int;
     auto Depth()const->int;
+    auto Width()const->int;
     auto Copy(BiTree &newTree)const;
     auto Order(OrderEnum o)const->void;
     auto PreOrder()const->void;
@@ -195,6 +196,45 @@ inline auto BiTree<T>::Depth() const -> int
 
     };
     return depth(m_root);
+}
+
+template<typename T>
+inline auto BiTree<T>::Width() const -> int
+{
+    if (!m_root)
+        return 0;
+    NodePtr que[MAXSIZE];
+    int front = 0, rear = 0;
+    que[++rear] = m_root;
+    NodePtr nextfirst = nullptr;
+    int cnt = 0, width = 0;
+    while (front != rear)
+    {
+        front = (front + 1) % MAXSIZE;
+        NodePtr cur = que[front];
+        if (cur == nextfirst)
+        {
+            Visit(cnt);
+            width = cnt > width ? cnt : width;
+            cnt = 0;
+            nextfirst = nullptr;
+        }
+        ++cnt;
+        nextfirst = (!nextfirst) ? (cur->lc ? cur->lc : cur->rc) : nextfirst;
+        if (cur->lc)
+        {
+            rear = (rear + 1) % MAXSIZE;
+            que[rear] = cur->lc;
+        }
+        if (cur->rc)
+        {
+            rear = (rear + 1) % MAXSIZE;
+            que[rear] = cur->rc;
+        }
+    }
+    Visit(cnt);
+    width = cnt > width ? cnt : width;
+    return width;
 }
 
 template<typename T>
