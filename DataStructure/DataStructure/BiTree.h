@@ -7,7 +7,7 @@ struct BiNode
     T data = T();
     BiNode *lc = nullptr;
     BiNode *rc = nullptr;
-    BiNode(T _data, BiNode *_lc = nullptr, BiNode *_rc = nullptr) :data(_data), lc(_lc), rc(_rc) {}
+    BiNode(T _data, BiNode *_lc = nullptr, BiNode *_rc = nullptr):data(_data), lc(_lc), rc(_rc) {}
     //BiNode(const BiNode &node):data(node.data),lc
 };
 constexpr unsigned MAXSIZE = 1024;
@@ -62,48 +62,22 @@ inline BiTree<T>::~BiTree()
 template<typename T>
 inline auto BiTree<T>::GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList) -> void
 {
-    using iter = typename std::initializer_list<T>::const_iterator;
-    using funcType = std::function<void(iter, iter, iter, iter, NodePtr&, bool)>;
-    /*有待改进*/
-    funcType gen = [=, &gen](iter preBegin, iter preEnd, iter inBegin, iter inEnd, 
-        NodePtr &parent, bool left)
+    /*改进版本，可能是最好的? */
+    using funcType = std::function<Node*(const T[], int, int, const T[], int, int)>;
+    funcType create = [&create](const T pre[], int l1, int r1, const T in[], int l2, int r2) -> Node*
     {
-        if (!(preBegin < preEnd) || !(inBegin < inEnd))
-            return;
-        auto val = *preBegin;
-        DebugVar(val);
-        NodePtr node = new Node{ val };
-        if (!parent)
-            parent = node;
-        else
-        {
-            if (left)
-                parent->lc = node;
-            else
-                parent->rc = node;
-        }
-        iter newInEnd1 = inBegin;
-        while (newInEnd1 != inEnd && *newInEnd1 != val)
-            ++newInEnd1;
-        iter newPreBegin2;
-        for (newPreBegin2 = preBegin + 1; newPreBegin2 != preEnd; ++newPreBegin2)
-        {
-            iter it;
-            for (it = newInEnd1; it != inEnd && *it != *newPreBegin2; ++it);
-            if (it != inEnd)
-                break;
-        }
-        gen(preBegin + 1, newPreBegin2, inBegin, newInEnd1, node, true);
-        gen(newPreBegin2, preEnd, newInEnd1 + 1, inEnd, node, false);
+        if (l1 > r1 || l2 > r2)
+            return nullptr;
+        Node *node = new Node{ pre[l1] };
+        int pos;
+        for (pos = l2; pos <= r2 && in[pos] != node->data; ++pos);
+        node->lc = create(pre, l1 + 1, l1 + pos - l2, in, l2, pos - 1);
+        node->rc = create(pre, l1 + pos - l2 + 1, r1, in, pos + 1, r2);
+        return node;
     };
-    m_root = nullptr;
-    gen(preList.begin(), preList.end(), inList.begin(), inList.end(), m_root, true);
-
-    //PreOrder();
-    //InOrder();
-    //PostOrder();
-    //InOrder2();
-    //PostOrder2();
+    m_root = create(
+        preList.begin(), 0, (int)preList.size() - 1,
+        inList.begin(), 0, (int)inList.size() - 1);
 }
 
 template<typename T>
