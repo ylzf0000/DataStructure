@@ -126,7 +126,7 @@ inline auto BiTree<T>::setParent(Node * node) -> Node *&
 template<typename T>
 auto BiTree<T>::generateByPreAndIn(const T pre[], int l1, int r1, const T in[], int l2, int r2) -> Node *
 {
-    /*改进版本，可能是最好的? */
+    /*改进版本，可能是自己写的最好的? */
     if (l1 > r1 || l2 > r2)
         return nullptr;
     Node *node = new Node{ pre[l1] };
