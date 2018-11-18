@@ -175,7 +175,8 @@ auto ZXXXE::Test::TestTree() -> void
     tree.GenerateByPreAndIn(
         { 5,4,2,3,9,7,6,10,11 },
         { 2,3,4,5,6,7,9,10,11 });
-    tree.SetParent();
+    //tree.SetParent();
+    DebugVar(tree.Level(5));
     //tree.Generate(CONTAINER(lst));
     //DebugVar(tree.Width());
     //DebugVar(tree.CountLeaf());

@@ -44,17 +44,13 @@ public:
     auto PostOrder2()const->void;
     auto PostOrder3()const->void;
     auto LevelOrder()const->void;
-    //************************************
-    // Method:    SetParent
-    // Desc:      为Node的parent指针赋值，并输出每个结点到根结点的路径
-    // FullName:  BiTree<T>::SetParent
-    // Access:    public 
-    // Returns:   auto
-    // Qualifier: ->void
-    //************************************
+    /*为Node的parent指针赋值，并输出每个结点到根结点的路径*/
     auto SetParent()->void;
+    /*输出树中值为X的层号*/
+    int Level(T x);
 
 private:
+    int level(Node *node, T x);
     auto path(Node *node)->void;
     auto preOrder(Node *node, std::function<void(Node*)> cb)->void;
     auto setParent(Node *node)->Node*&;
@@ -79,6 +75,19 @@ inline auto BiTree<T>::GenerateByPreAndIn(std::initializer_list<T> preList, decl
     auto pre = preList.begin(), in = inList.begin();
     int r1 = (int)preList.size() - 1, r2 = (int)inList.size() - 1;
     m_root = generateByPreAndIn(pre, 0, r1, in, 0, r2);
+}
+
+template<typename T>
+int BiTree<T>::level(Node * node, T x)
+{
+    if (!node)
+        return 0;
+    if (node->data == x)
+        return 1;
+    int lc = level(node->lchild, x);
+    int rc = level(node->rchild, x);
+    int c = lc > rc ? lc : rc;
+    return (c > 0) ? c + 1 : 0;
 }
 
 template<typename T>
@@ -445,4 +454,10 @@ auto BiTree<T>::SetParent() -> void
     preOrder(m_root, fun);
 }
 
-template class BiTree<int>;
+template<typename T>
+inline int BiTree<T>::Level(T x)
+{
+    return level(m_root, x);
+}
+
+template class BiTree<char>;
