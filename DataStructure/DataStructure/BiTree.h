@@ -44,8 +44,20 @@ public:
     auto PostOrder2()const->void;
     auto PostOrder3()const->void;
     auto LevelOrder()const->void;
+    //************************************
+    // Method:    SetParent
+    // Desc:      为Node的parent指针赋值，并输出每个结点到根结点的路径
+    // FullName:  BiTree<T>::SetParent
+    // Access:    public 
+    // Returns:   auto
+    // Qualifier: ->void
+    //************************************
+    auto SetParent()->void;
 
 private:
+    auto path(Node *node)->void;
+    auto preOrder(Node *node, std::function<void(Node*)> cb)->void;
+    auto setParent(Node *node)->Node*&;
     auto generateByPreAndIn(const T pre[], int l1, int r1, const T in[], int l2, int r2)->Node*;
     auto preOrder(ConstNodePtr node)const->void;
     auto inOrder(ConstNodePtr node)const->void;
@@ -64,9 +76,42 @@ inline BiTree<T>::~BiTree()
 template<typename T>
 inline auto BiTree<T>::GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList) -> void
 {
-    m_root = generateByPreAndIn(
-        preList.begin(), 0, (int)preList.size() - 1,
-        inList.begin(), 0, (int)inList.size() - 1);
+    auto pre = preList.begin(), in = inList.begin();
+    int r1 = (int)preList.size() - 1, r2 = (int)inList.size() - 1;
+    m_root = generateByPreAndIn(pre, 0, r1, in, 0, r2);
+}
+
+template<typename T>
+inline auto BiTree<T>::path(Node * node) -> void
+{
+    while (node)
+    {
+        VISIT(node);
+        node = node->parent;
+    }
+}
+
+template<typename T>
+auto BiTree<T>::preOrder(Node * node, std::function<void(Node*)> cb) -> void
+{
+    if (!node)
+        return;
+    std::cout << node->data << "--------------------------------------\n";
+    //VISIT(node);
+    cb(node);
+    preOrder(node->lchild, cb);
+    preOrder(node->rchild, cb);
+}
+
+template<typename T>
+inline auto BiTree<T>::setParent(Node * node) -> Node *&
+{
+    if (node->lchild)
+        setParent(node->lchild) = node;
+    if (node->rchild)
+        setParent(node->rchild) = node;
+    VISIT(node);
+    return node->parent;
 }
 
 template<typename T>
@@ -387,6 +432,17 @@ inline auto BiTree<T>::LevelOrder() const -> void
         if (p->rchild)
             q[++rear] = p->rchild;
     }
+}
+
+template<typename T>
+auto BiTree<T>::SetParent() -> void
+{
+    if (!m_root)
+        return;
+    setParent(m_root);
+    auto &_1 = std::placeholders::_1;
+    std::function<void(Node*)> fun = std::bind(&BiTree<T>::path, this, _1);
+    preOrder(m_root, fun);
 }
 
 template class BiTree<int>;
