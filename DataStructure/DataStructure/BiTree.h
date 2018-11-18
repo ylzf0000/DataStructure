@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <functional>
 #include "SqStack.h"
 template <typename T>
@@ -44,9 +44,9 @@ public:
     auto PostOrder2()const->void;
     auto PostOrder3()const->void;
     auto LevelOrder()const->void;
-    /*ÎªNodeµÄparentÖ¸Õë¸³Öµ£¬²¢Êä³öÃ¿¸ö½áµãµ½¸ù½áµãµÄÂ·¾¶*/
+    /*ä¸ºNodeçš„parentæŒ‡é’ˆèµ‹å€¼ï¼Œå¹¶è¾“å‡ºæ¯ä¸ªç»“ç‚¹åˆ°æ ¹ç»“ç‚¹çš„è·¯å¾„*/
     auto SetParent()->void;
-    /*Êä³öÊ÷ÖĞÖµÎªXµÄ²ãºÅ*/
+    /*è¾“å‡ºæ ‘ä¸­å€¼ä¸ºXçš„å±‚å·*/
     int Level(T x);
 
 private:
@@ -126,7 +126,7 @@ inline auto BiTree<T>::setParent(Node * node) -> Node *&
 template<typename T>
 auto BiTree<T>::generateByPreAndIn(const T pre[], int l1, int r1, const T in[], int l2, int r2) -> Node *
 {
-    /*¸Ä½ø°æ±¾£¬¿ÉÄÜÊÇ×Ô¼ºĞ´µÄ×îºÃµÄ? */
+    /*æ”¹è¿›ç‰ˆæœ¬ï¼Œå¯èƒ½æ˜¯è‡ªå·±å†™çš„æœ€å¥½çš„? */
     if (l1 > r1 || l2 > r2)
         return nullptr;
     Node *node = new Node{ pre[l1] };
