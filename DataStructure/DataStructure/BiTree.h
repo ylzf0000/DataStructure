@@ -5,9 +5,10 @@ template <typename T>
 struct BiNode
 {
     T data = T();
-    BiNode *lc = nullptr;
-    BiNode *rc = nullptr;
-    BiNode(T _data, BiNode *_lc = nullptr, BiNode *_rc = nullptr):data(_data), lc(_lc), rc(_rc) {}
+    BiNode *lchild = nullptr;
+    BiNode *rchild = nullptr;
+    BiNode *parent = nullptr;
+    BiNode(T _data, BiNode *_lc = nullptr, BiNode *_rc = nullptr):data(_data), lchild(_lc), rchild(_rc) {}
     //BiNode(const BiNode &node):data(node.data),lc
 };
 constexpr unsigned MAXSIZE = 1024;
@@ -45,6 +46,7 @@ public:
     auto LevelOrder()const->void;
 
 private:
+    auto generateByPreAndIn(const T pre[], int l1, int r1, const T in[], int l2, int r2)->Node*;
     auto preOrder(ConstNodePtr node)const->void;
     auto inOrder(ConstNodePtr node)const->void;
     auto postOrder(ConstNodePtr node)const->void;
@@ -62,22 +64,23 @@ inline BiTree<T>::~BiTree()
 template<typename T>
 inline auto BiTree<T>::GenerateByPreAndIn(std::initializer_list<T> preList, decltype(preList) inList) -> void
 {
-    /*改进版本，可能是最好的? */
-    using funcType = std::function<Node*(const T[], int, int, const T[], int, int)>;
-    funcType create = [&create](const T pre[], int l1, int r1, const T in[], int l2, int r2) -> Node*
-    {
-        if (l1 > r1 || l2 > r2)
-            return nullptr;
-        Node *node = new Node{ pre[l1] };
-        int pos;
-        for (pos = l2; pos <= r2 && in[pos] != node->data; ++pos);
-        node->lc = create(pre, l1 + 1, l1 + pos - l2, in, l2, pos - 1);
-        node->rc = create(pre, l1 + pos - l2 + 1, r1, in, pos + 1, r2);
-        return node;
-    };
-    m_root = create(
+    m_root = generateByPreAndIn(
         preList.begin(), 0, (int)preList.size() - 1,
         inList.begin(), 0, (int)inList.size() - 1);
+}
+
+template<typename T>
+auto BiTree<T>::generateByPreAndIn(const T pre[], int l1, int r1, const T in[], int l2, int r2) -> Node *
+{
+    /*改进版本，可能是最好的? */
+    if (l1 > r1 || l2 > r2)
+        return nullptr;
+    Node *node = new Node{ pre[l1] };
+    int pos;
+    for (pos = l2; pos <= r2 && in[pos] != node->data; ++pos);
+    node->lchild = generateByPreAndIn(pre, l1 + 1, l1 + pos - l2, in, l2, pos - 1);
+    node->rchild = generateByPreAndIn(pre, l1 + pos - l2 + 1, r1, in, pos + 1, r2);
+    return node;
 }
 
 template<typename T>
@@ -86,8 +89,8 @@ auto BiTree<T>::preOrder(ConstNodePtr node) const -> void
     if (!node)
         return;
     DebugVar(node->data);
-    preOrder(node->lc);
-    preOrder(node->rc);
+    preOrder(node->lchild);
+    preOrder(node->rchild);
 }
 
 template<typename T>
@@ -95,9 +98,9 @@ auto BiTree<T>::inOrder(ConstNodePtr node) const -> void
 {
     if (!node)
         return;
-    inOrder(node->lc);
+    inOrder(node->lchild);
     DebugVar(node->data);
-    inOrder(node->rc);
+    inOrder(node->rchild);
 }
 
 template<typename T>
@@ -105,8 +108,8 @@ auto BiTree<T>::postOrder(ConstNodePtr node) const -> void
 {
     if (!node)
         return;
-    postOrder(node->lc);
-    postOrder(node->rc);
+    postOrder(node->lchild);
+    postOrder(node->rchild);
     DebugVar(node->data);
 }
 
@@ -115,8 +118,8 @@ void BiTree<T>::free(NodePtr & node)
 {
     if (node)
     {
-        free(node->lc);
-        free(node->rc);
+        free(node->lchild);
+        free(node->rchild);
         //DebugVar(node->data);
         delete node;
         node = nullptr;
@@ -134,8 +137,8 @@ auto BiTree<T>::Generate(ConstPtr begin, ConstPtr end) -> void
         if (*begin == Elem())
             return;
         node = new Node{ *begin };
-        generate(node->lc, ++begin, end);
-        generate(node->rc, ++begin, end);
+        generate(node->lchild, ++begin, end);
+        generate(node->rchild, ++begin, end);
     };
     generate(m_root, begin, end);
 }
@@ -147,10 +150,10 @@ inline auto BiTree<T>::CountLeaf() const -> int
     (NodePtr node, int &count) {
         if (!node)
             return;
-        if ((!node->lc) && (!node->rc))
+        if ((!node->lchild) && (!node->rchild))
             ++count;
-        preFunc(node->lc, count);
-        preFunc(node->rc, count);
+        preFunc(node->lchild, count);
+        preFunc(node->rchild, count);
     };
     int n = 0;
     preFunc(m_root, n);
@@ -164,8 +167,8 @@ inline auto BiTree<T>::Depth() const -> int
     (NodePtr node) {
         if (!node)
             return 0;
-        int ld = depth(node->lc);
-        int rd = depth(node->rc);
+        int ld = depth(node->lchild);
+        int rd = depth(node->rchild);
         return 1 + (ld > rd ? ld : rd);
 
     };
@@ -194,16 +197,16 @@ inline auto BiTree<T>::Width() const -> int
             nextfirst = nullptr;
         }
         ++cnt;
-        nextfirst = (!nextfirst) ? (cur->lc ? cur->lc : cur->rc) : nextfirst;
-        if (cur->lc)
+        nextfirst = (!nextfirst) ? (cur->lchild ? cur->lchild : cur->rchild) : nextfirst;
+        if (cur->lchild)
         {
             rear = (rear + 1) % MAXSIZE;
-            que[rear] = cur->lc;
+            que[rear] = cur->lchild;
         }
-        if (cur->rc)
+        if (cur->rchild)
         {
             rear = (rear + 1) % MAXSIZE;
-            que[rear] = cur->rc;
+            que[rear] = cur->rchild;
         }
     }
     Visit(cnt);
@@ -222,8 +225,8 @@ inline auto BiTree<T>::Copy(BiTree & newTree) const
         [&copyNode, &copyTree](ConstNodePtr node)->NodePtr {
         if (!node)
             return nullptr;
-        NodePtr lChild = node->lc ? copyTree(node->lc) : nullptr;
-        NodePtr rChild = node->rc ? copyTree(node->rc) : nullptr;
+        NodePtr lChild = node->lchild ? copyTree(node->lchild) : nullptr;
+        NodePtr rChild = node->rchild ? copyTree(node->rchild) : nullptr;
         return copyNode(node->data, lChild, rChild);
     };
     if (!m_root)
@@ -266,10 +269,10 @@ inline auto BiTree<T>::PreOrder2() const -> void
         NodePtr p = s[top];
         VISIT(s[top]);
         --top;
-        if (p->rc)
-            s[++top] = p->rc;
-        if (p->lc)
-            s[++top] = p->lc;
+        if (p->rchild)
+            s[++top] = p->rchild;
+        if (p->lchild)
+            s[++top] = p->lchild;
     }
 }
 
@@ -289,19 +292,19 @@ auto BiTree<T>::InOrder2() const -> void
     NodePtr s[MAXSIZE];
     int top = -1;
     s[++top] = m_root;
-    NodePtr p = m_root->lc;
+    NodePtr p = m_root->lchild;
     while (top > -1 || p)
     {
         if (p)
         {
             s[++top] = p;
-            p = p->lc;
+            p = p->lchild;
         }
         else
         {
             p = s[top--];
             VISIT(p);
-            p = p->rc;
+            p = p->rchild;
         }
     }
 }
@@ -326,10 +329,10 @@ inline auto BiTree<T>::PostOrder2() const -> void
     {
         NodePtr p = s1[top1--];
         s2[++top2] = p;
-        if (p->lc)
-            s1[++top1] = p->lc;
-        if (p->rc)
-            s1[++top1] = p->rc;
+        if (p->lchild)
+            s1[++top1] = p->lchild;
+        if (p->rchild)
+            s1[++top1] = p->rchild;
     }
     while (top2 > -1)
     {
@@ -352,17 +355,17 @@ inline auto BiTree<T>::PostOrder3() const -> void
     while (!s.IsEmpty())
     {
         cur = s.Top();
-        if ((!cur->lc && !cur->rc) || (pre && (pre == cur->lc || pre == cur->rc)))
+        if ((!cur->lchild && !cur->rchild) || (pre && (pre == cur->lchild || pre == cur->rchild)))
         {
             VISIT(cur);
             pre = cur;
             s.Pop();
             continue;
         }
-        if (cur->rc)
-            s.Push(cur->rc);
-        if (cur->lc)
-            s.Push(cur->lc);
+        if (cur->rchild)
+            s.Push(cur->rchild);
+        if (cur->lchild)
+            s.Push(cur->lchild);
     }
 }
 
@@ -379,10 +382,10 @@ inline auto BiTree<T>::LevelOrder() const -> void
     {
         p = q[head++];
         VISIT(p);
-        if (p->lc)
-            q[++rear] = p->lc;
-        if (p->rc)
-            q[++rear] = p->rc;
+        if (p->lchild)
+            q[++rear] = p->lchild;
+        if (p->rchild)
+            q[++rear] = p->rchild;
     }
 }
 
