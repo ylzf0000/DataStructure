@@ -24,8 +24,8 @@ ZXXXE::Test::Test()
     //TestStack();
     //this->Calculate("#1+2-3*((4+5)*3-1)+2#");
     //Recursion();
-    TestTree();
-    //TestGraph();
+    //TestTree();
+    TestGraph();
     //TestString();
     //TestSort();
     //PrintConbinationRec(4, 2);
@@ -224,18 +224,19 @@ auto ZXXXE::Test::TestGraph()->void
         { INF, INF, 1,   0,   INF },
         { INF, INF, INF, INF, 0   }
     };
-    MGraph<int> mg(mat);
-    ALGraph<int> alg(mat);
+    //MGraph<int> mg(mat);
+    ALGraph<int> alg(mat2);
+    alg.dfsnr();
     //auto vec = mg.neighbor(2);
-    auto vec = alg.neighbor(2);
-    std::for_each(CONTAINER(vec), [](auto e) {cout << e; });
-    DFSTraverse(alg);
-    cout << endl;
-    DFSTraverse(mg);
-    cout << endl;
-    BFSTraverse(mg);
-    cout << endl;
-    TopSort(MGraph<int>(mat2), 0);
+    //auto vec = alg.neighbor(2);
+    //std::for_each(CONTAINER(vec), [](auto e) {cout << e; });
+    //DFSTraverse(alg);
+    //cout << endl;
+    //DFSTraverse(mg);
+    //cout << endl;
+    //BFSTraverse(mg);
+    //cout << endl;
+    //TopSort(MGraph<int>(mat2), 0);
 }
 
 auto ZXXXE::Test::TestString() -> void

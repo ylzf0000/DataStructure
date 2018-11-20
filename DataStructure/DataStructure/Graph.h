@@ -2,8 +2,8 @@
 #include <vector>
 #include <iostream>
 
-constexpr int MAX_G_VNUM = 100;
-constexpr int MAX_G_ENUM = 100;
+constexpr int MAX_G_VNUM = 128;
+constexpr int MAX_G_ENUM = 128;
 constexpr int INF = 0x7FFFFFFF;
 
 template<typename T = int>
@@ -86,6 +86,7 @@ public:
     auto firstNeighbor(int x)const->int;
     auto nextNeighbor(int x, int y)const->int;
     auto edgeValue(int x, int y)const->ET;
+    void dfsnr();
 private:
     void Vnum(int val) { m_vnum = val; }
     VNode  m_list[MAX_G_VNUM];
@@ -276,6 +277,30 @@ inline auto ALGraph<ET>::edgeValue(int x, int y)const -> ET
 }
 
 template<typename ET>
+void ALGraph<ET>::dfsnr()
+{
+    bool visit[MAX_G_VNUM] = { 0 };
+    int top = -1;
+    int stack[MAX_G_VNUM];
+    stack[++top] = 0;
+    visit[0] = 1;
+    while (top >= 0)
+    {
+        int i= stack[top--];
+        Visit(i);
+        for (ANode *arc = m_list[i].first; arc; arc = arc->next)
+        {
+            int j = arc->adjvex;
+            if (!visit[j])
+            {
+                visit[j] = 1;
+                stack[++top] = j;
+            }
+        }
+    }
+}
+
+template<typename ET>
 template<unsigned N>
 inline ALGraph<ET>::ALGraph(ET(&mat)[N][N])
 {
@@ -286,8 +311,7 @@ inline ALGraph<ET>::ALGraph(ET(&mat)[N][N])
             int val = mat[i][j];
             if (val == INF || val == 0)
                 continue;
-            ANode *lastFist = m_list[i].first;
-            ANode *newNode = new ANode{ j, val, lastFist };
+            ANode *newNode = new ANode{ j, val, m_list[i].first };
             m_list[i].first = newNode;
         }
 }
