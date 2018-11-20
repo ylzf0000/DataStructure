@@ -280,7 +280,7 @@ inline auto ALGraph<ET>::edgeValue(int x, int y)const -> ET
 template<typename ET>
 void ALGraph<ET>::dfsnr()
 {
-    bool visit[MAX_G_VNUM] = { 0 };
+    int visit[MAX_G_VNUM] = { 0 };
     int top = -1;
     int stack[MAX_G_VNUM];
     stack[++top] = 0;
