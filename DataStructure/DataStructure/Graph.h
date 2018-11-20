@@ -86,6 +86,7 @@ public:
     auto firstNeighbor(int x)const->int;
     auto nextNeighbor(int x, int y)const->int;
     auto edgeValue(int x, int y)const->ET;
+    /*·ÇµÝ¹é°æ±¾µÄDFS*/
     void dfsnr();
 private:
     void Vnum(int val) { m_vnum = val; }
