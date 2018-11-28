@@ -178,6 +178,7 @@ void _ZXXXE::printPermutationDict(int n)
     {
         PRINT_CONTEX(a, 0, n);
     } while (nextPermutation(a, n));
+    delete[] a;
 }
 
 void _ZXXXE::printPermutationDict(int a[], int n)
@@ -225,7 +226,6 @@ void PrintPermutationDict(int n)
 {
     _ZXXXE::printPermutationDict(n);
 }
-
 
 struct Node
 {
