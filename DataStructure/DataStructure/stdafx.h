@@ -50,6 +50,7 @@ namespace ZXXXE
 
 
 #define CONTAINER(x) std::begin(x), std::end(x)
+#define LENGTH(a) (sizeof(a)/sizeof(a[0]))
 #define PRINT_CONT(c)                      {            \
     std::for_each(CONTAINER(c),[](auto e){std::cout<<e<<" "; });\
     std::cout<<std::endl;                               \

@@ -154,6 +154,54 @@ void _ZXXXE::printDescendant(int a[], int n, int x)
     }
 }
 
+void _ZXXXE::printPermutation(int a[], int n, int k)
+{
+    if (k == n - 1)
+    {
+        PRINT_CONTEX(a, 0, n);
+        return;
+    }
+    for (int i = k; i < n; ++i)
+    {
+        swap(a[k], a[i]);
+        printPermutation(a, n, k + 1);
+        swap(a[k], a[i]);
+    }
+}
+
+void _ZXXXE::printPermutationDict(int n)
+{
+    int *a = new int[n];
+    for (int i = 0; i < n; ++i)
+        a[i] = i + 1;
+    do
+    {
+        PRINT_CONTEX(a, 0, n);
+    } while (nextPermutation(a, n));
+}
+
+void _ZXXXE::printPermutationDict(int a[], int n)
+{
+    do
+    {
+        PRINT_CONTEX(a, 0, n);
+    } while (nextPermutation(a, n));
+}
+
+bool _ZXXXE::nextPermutation(int a[], int n)
+{
+    int p;
+    for (p = n - 1; p >= 0 && a[p - 1] >= a[p]; --p);
+    if (p == 0)
+        return false;
+    for (int i = p, j = n - 1; i < j; ++i, --j)
+        swap(a[i], a[j]);
+    int q;
+    for (q = p; q < n && a[q] <= a[p - 1]; ++q);
+    swap(a[p - 1], a[q]);
+    return true;
+}
+
 void PrintConbinationRec(int n, int k)
 {
     int *arr = new int[k + 1];
@@ -162,6 +210,20 @@ void PrintConbinationRec(int n, int k)
         _ZXXXE::printConbinationRec(n, k, 1, i, arr);
     }
     delete[] arr;
+}
+
+void PrintPermutation(int n)
+{
+    int *a = new int[n];
+    for (int i = 0; i < n; ++i)
+        a[i] = i + 1;
+    _ZXXXE::printPermutation(a, n, 0);
+    delete[] a;
+}
+
+void PrintPermutationDict(int n)
+{
+    _ZXXXE::printPermutationDict(n);
 }
 
 

@@ -202,6 +202,12 @@ namespace _ZXXXE
     void printConbinationRec(int n, int k, int r, int cur, int *arr);
     /*打印完全二叉树某一结点的子孙*/
     void printDescendant(int a[], int n, int x);
+    /*打印所有1-n的排列*/
+    void printPermutation(int a[], int n, int k);
+    /*打印所有1-n的排列(字典序) 可处理有重复数字序列*/
+    void printPermutationDict(int n);
+    void printPermutationDict(int a[], int n);
+    bool nextPermutation(int a[], int n);
 }
 
 template<unsigned N>
@@ -223,3 +229,6 @@ int kBigNo(int(&a)[N], int k)
 }
 
 void PrintConbinationRec(int n, int k);
+/*打印所有1-n的排列*/
+void PrintPermutation(int n);
+void PrintPermutationDict(int n);

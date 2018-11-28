@@ -25,7 +25,7 @@ ZXXXE::Test::Test()
     //this->Calculate("#1+2-3*((4+5)*3-1)+2#");
     //Recursion();
     //TestTree();
-    TestGraph();
+    //TestGraph();
     //TestString();
     //TestSort();
     //PrintConbinationRec(4, 2);
@@ -35,7 +35,10 @@ ZXXXE::Test::Test()
     //for (int i = 1; i <= N; ++i)
     //    a[i] = i;
     //_ZXXXE::printDescendant(a, N, 2);
-
+    //PrintPermutation(4);
+    //PrintPermutationDict(4);
+    int a[] = { 1,3,3,2,4 };
+    _ZXXXE::printPermutationDict(a, LENGTH(a));
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()
