@@ -227,6 +227,19 @@ void PrintPermutationDict(int n)
     _ZXXXE::printPermutationDict(n);
 }
 
+void NSort(int a[], int n)
+{
+    PRINT_CONTEX(a, 1, n + 1);
+    for (int i = 1; i <= n; ++i)
+    {
+        while (a[i] != i)
+        {
+            swap(a[i], a[a[i]]);
+            PRINT_CONTEX(a, 1, n+1);
+        }
+    }
+}
+
 struct Node
 {
     int data;

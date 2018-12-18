@@ -232,3 +232,5 @@ void PrintConbinationRec(int n, int k);
 /*打印所有1-n的排列*/
 void PrintPermutation(int n);
 void PrintPermutationDict(int n);
+
+void NSort(int a[], int n);

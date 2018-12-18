@@ -37,8 +37,10 @@ ZXXXE::Test::Test()
     //_ZXXXE::printDescendant(a, N, 2);
     //PrintPermutation(4);
     //PrintPermutationDict(4);
-    int a[] = { 1,3,3,2,4 };
-    _ZXXXE::printPermutationDict(a, LENGTH(a));
+    //int a[] = { 1,3,3,2,4 };
+    //_ZXXXE::printPermutationDict(a, LENGTH(a));
+    int a[] = { 0,3,5,2,1,4 };
+    NSort(a, LENGTH(a) - 1);
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()
