@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include <string>
 #include <iostream>
+#include <stack>
+#include <queue>
 #include "Graph.h"
 template<class Con1, class Con2>
 void Union(Con1 &a, const Con2 &b)
@@ -234,3 +236,39 @@ void PrintPermutation(int n);
 void PrintPermutationDict(int n);
 
 void NSort(int a[], int n);
+
+//template<typename... Args>
+//auto add_val(Args&&... args) {
+//    return (args + ...);
+//}
+
+//»ùÊýÅÅÐò
+void RadixSort(int *_Begin, int *_End);
+template<typename _RanIt>
+void RadixSort(_RanIt _Begin, _RanIt _End)
+{
+    int maxelem = *_Begin;
+    for (auto it = _Begin; it != _End; ++it)
+        maxelem = ::max(maxelem, *it);
+    std::queue<int> arr[10];
+    int _Basic = 1;
+    while (maxelem > 0)
+    {
+        for (auto it = _Begin; it != _End; ++it)
+        {
+            arr[(*it) / _Basic % 10].push(*it);
+        }
+        _Basic *= 10;
+        maxelem /= 10;
+        auto it = _Begin;
+        for (int i = 0; i < 10; ++i)
+        {
+            while (!arr[i].empty())
+            {
+                *it = arr[i].front();
+                arr[i].pop();
+                ++it;
+            }
+        }
+    }
+}

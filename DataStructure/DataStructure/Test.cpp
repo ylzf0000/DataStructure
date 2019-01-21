@@ -39,8 +39,21 @@ ZXXXE::Test::Test()
     //PrintPermutationDict(4);
     //int a[] = { 1,3,3,2,4 };
     //_ZXXXE::printPermutationDict(a, LENGTH(a));
-    int a[] = { 0,3,5,2,1,4 };
-    NSort(a, LENGTH(a) - 1);
+    //int a[] = { 0,3,5,2,1,4 };
+    //NSort(a, LENGTH(a) - 1);
+    //string s;
+    //transform(s.begin(), s.end(), s.begin(), tolower);
+    //auto i = add_val(1, 2, 3, 4);
+    //DebugVar(i);
+    vector<int> v;
+    RandInt rand(1, 1000);
+    for (int i = 0; i < 20; ++i)
+    {
+        v.push_back(rand());
+    }
+    //int a[] = { 4,123,34,123,67,1,67 };
+    RadixSort(CONTAINER(v));
+    PRINT_CONT(v);
 }
 #define TEST 1
 void ZXXXE::Test::TestLinkList()
