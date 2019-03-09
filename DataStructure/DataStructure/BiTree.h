@@ -294,11 +294,11 @@ inline auto BiTree<T>::Order(OrderEnum o) const -> void
     switch (o)
     {
     case OrderEnum::In:
-        InOrder(); return;
+        InOrder(); break;
     case OrderEnum::Post:
-        PostOrder(); return;
+        PostOrder(); break;
     case BiTree::OrderEnum::Pre:
-        PreOrder(); return;
+        PreOrder(); break;
     }
 }
 
