@@ -8,7 +8,7 @@
 #include <deque>
 #include <queue>
 using namespace std;
-constexpr int N = 505;
+constexpr int N = 55;
 int n;
 int w[N][N];
 constexpr int INF = INT_MAX;
@@ -26,6 +26,7 @@ int min_weight_tsp()
 {
 	int min_sum = 0;
 	int min_out[N];
+	int bestw = INF;
 	for (int i = 1; i <= n; ++i)
 	{
 		int min_w = INF;
@@ -42,19 +43,19 @@ int min_weight_tsp()
 	for (int i = 1; i <= n; ++i)
 		e.x[i] = i;
 	e.s = 1; e.cw = 0; e.rw = min_sum;
-	int bestw = INF;
-	while (e.s < n)
+	q.push(e);
+	while (!q.empty())
 	{
+		e = q.top();
+		q.pop();
 		if (e.s == n - 1)
 		{
 			if (w[e.x[n - 1]][e.x[n]] != INF && w[e.x[n]][e.x[1]] != INF &&
 				e.cw + w[e.x[n - 1]][e.x[n]] + w[e.x[n]][e.x[1]] < bestw)
 			{
 				bestw = e.cw + w[e.x[n - 1]][e.x[n]] + w[e.x[n]][e.x[1]];
-				e.cw = e.lw = bestw;
-				e.s += 1;
-				//²åÈë£¿
-				//q.push(e);
+				//e.cw = e.lw = bestw;
+				//e.s += 1;
 			}
 		}
 		else
@@ -79,8 +80,6 @@ int min_weight_tsp()
 					}
 				}
 			}
-			e = q.top();
-			q.pop();
 		}
 	}
 	if (bestw == INF)
@@ -110,20 +109,23 @@ void finput(const string& s)
 			w[i][j] = (int)sqrt(dx * dx + dy * dy);
 		}
 }
-
+void finput2()
+{
+	fstream fin("in_tsp.txt");
+	fin >> n;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			fin >> w[i][j];
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			cout << w[i][j] << ((j == n) ? "\n" : " ");
+}
 int main()
 {
 	finput("in_tsp_351.txt");
 	n = 10;
-	w[2][3] = w[5][6] = INF;
-	//fstream fin("in_tsp.txt");
-	//fin >> n;
-	//for (int i = 1; i <= n; ++i)
-	//	for (int j = 1; j <= n; ++j)
-	//		fin >> w[i][j];
-	//for (int i = 1; i <= n; ++i)
-	//	for (int j = 1; j <= n; ++j)
-	//		cout << w[i][j] << ((j == n) ? "\n" : " ");
+	//w[2][3] = w[5][6] = INF;
+
 
 	cout << min_weight_tsp() << endl;
 	for (int i = 1; i <= n; ++i)
