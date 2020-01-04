@@ -46,15 +46,18 @@ int min_weight_tsp()
 		e.x[i] = i;
 	e.s = 1; e.cw = 0; e.rw = min_sum;
 	q.push(e);
-	while (!q.empty())
+	while ((e = q.top()).s < n)
 	{
-		e = q.top();
 		q.pop();
 		if (e.s == n - 1)
 		{
 			if (e.cw + w[e.x[n - 1]][e.x[n]] + w[e.x[n]][e.x[1]] < bestw)
 			{
 				bestw = e.cw + w[e.x[n - 1]][e.x[n]] + w[e.x[n]][e.x[1]];
+				e.cw = bestw;
+				e.lw = bestw;
+				e.s += 1;
+				q.push(e);
 			}
 		}
 		else
