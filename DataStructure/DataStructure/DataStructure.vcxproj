@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="1171.h" />
     <ClInclude Include="Algorithm.h" />
     <ClInclude Include="BiTree.h" />
     <ClInclude Include="Calculator.h" />

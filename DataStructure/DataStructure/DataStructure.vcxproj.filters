@@ -75,6 +75,9 @@
     <ClInclude Include="tsp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="1171.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

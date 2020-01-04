@@ -4,11 +4,13 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <limits.h>
 #include <numeric>
 #include <deque>
 #include <queue>
+#include <cmath>
 using namespace std;
-constexpr int N = 55;
+constexpr int N = 22;
 int n;
 int w[N][N];
 constexpr int INF = INT_MAX;
@@ -54,8 +56,8 @@ int min_weight_tsp()
 				e.cw + w[e.x[n - 1]][e.x[n]] + w[e.x[n]][e.x[1]] < bestw)
 			{
 				bestw = e.cw + w[e.x[n - 1]][e.x[n]] + w[e.x[n]][e.x[1]];
-				//e.cw = e.lw = bestw;
-				//e.s += 1;
+				for (int i = 1; i <= n; ++i)
+					bestx[i] = e.x[i];
 			}
 		}
 		else
@@ -65,7 +67,7 @@ int min_weight_tsp()
 				if (w[e.x[e.s]][e.x[i]] != INF)
 				{
 					int cw = e.cw + w[e.x[e.s]][e.x[i]];
-					int rw = e.rw - min_out[e.x[e.s]];
+					int rw = e.rw - min_out[e.x[i]];
 					int b = cw + rw;
 					if (b < bestw)
 					{
@@ -84,8 +86,6 @@ int min_weight_tsp()
 	}
 	if (bestw == INF)
 		return INF;
-	for (int i = 1; i <= n; ++i)
-		bestx[i] = e.x[i];
 	return bestw;
 }
 
@@ -122,14 +122,17 @@ void finput2()
 }
 int main()
 {
-	finput("in_tsp_351.txt");
-	n = 10;
-	//w[2][3] = w[5][6] = INF;
+	//finput("in_tsp_351.txt");
+	//n = 10;
+	cin >> n;
+	for (int i = 1; i <= n; ++i)
+		for (int j = 1; j <= n; ++j)
+			cin >> w[i][j];
 
 
 	cout << min_weight_tsp() << endl;
-	for (int i = 1; i <= n; ++i)
-		cout << bestx[i] << " ";
-	cout << endl;
+	//for (int i = 1; i <= n; ++i)
+	//	cout << bestx[i] << " ";
+	//cout << endl;
 
 }
