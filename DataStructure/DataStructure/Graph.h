@@ -311,7 +311,7 @@ void ALGraph<ET>::dfsnr2()
 	{
 		visit[i] = 1;
 		s.push(i);
-		while (top >= 0)
+		while (!s.empty())
 		{
 			int i = s.top(); s.pop();
 			Visit(i);
