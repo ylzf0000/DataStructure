@@ -15,11 +15,11 @@ constexpr int INF = INT_MAX;
 constexpr int N = 21;
 int n;
 int w[N][N];
-struct E
+struct Node
 {
 	int x[N];
 	int s, cw, rw, lw;
-	bool operator>(const E& e)const
+	bool operator>(const Node& e)const
 	{
 		return this->lw > e.lw;
 	}
@@ -40,8 +40,8 @@ int min_weight_tsp()
 		min_out[i] = min_w;
 		min_sum += min_w;
 	}
-	priority_queue<E, vector<E>, greater<E>> q;
-	E e;
+	priority_queue<Node, vector<Node>, greater<Node>> q;
+	Node e;
 	for (int i = 1; i <= n; ++i)
 		e.x[i] = i;
 	e.s = 1; e.cw = 0; e.rw = min_sum;
@@ -59,25 +59,23 @@ int min_weight_tsp()
 				e.s += 1;
 				q.push(e);
 			}
+			continue;
 		}
-		else
+		for (int i = e.s + 1; i <= n; ++i)
 		{
-			for (int i = e.s + 1; i <= n; ++i)
+			int cw = e.cw + w[e.x[e.s]][e.x[i]];
+			int rw = e.rw - min_out[e.x[e.s]];
+			int b = cw + rw;
+			if (b < bestw)
 			{
-				int cw = e.cw + w[e.x[e.s]][e.x[i]];
-				int rw = e.rw - min_out[e.x[e.s]];
-				int b = cw + rw;
-				if (b < bestw)
-				{
-					E new_e = e;
-					new_e.x[e.s + 1] = e.x[i];
-					new_e.x[i] = e.x[e.s + 1];
-					new_e.cw = cw;
-					new_e.s = e.s + 1;
-					new_e.lw = b;
-					new_e.rw = rw;
-					q.push(new_e);
-				}
+				Node n = e;
+				n.x[e.s + 1] = e.x[i];
+				n.x[i] = e.x[e.s + 1];
+				n.cw = cw;
+				n.s = e.s + 1;
+				n.lw = b;
+				n.rw = rw;
+				q.push(n);
 			}
 		}
 	}

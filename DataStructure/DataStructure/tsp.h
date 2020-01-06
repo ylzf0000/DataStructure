@@ -15,11 +15,11 @@ int n;
 int w[N][N];
 constexpr int INF = INT_MAX;
 int bestx[N];
-struct E
+struct Node
 {
 	int x[N];
 	int s, cw, rw, lw;
-	bool operator>(const E& e)const
+	bool operator>(const Node& e)const
 	{
 		return this->lw > e.lw;
 	}
@@ -40,8 +40,8 @@ int min_weight_tsp()
 		min_out[i] = min_w;
 		min_sum += min_w;
 	}
-	priority_queue<E, vector<E>, greater<E>> q;
-	E e;
+	priority_queue<Node, vector<Node>, greater<Node>> q;
+	Node e;
 	for (int i = 1; i <= n; ++i)
 		e.x[i] = i;
 	e.s = 1; e.cw = 0; e.rw = min_sum;
@@ -71,7 +71,7 @@ int min_weight_tsp()
 					int b = cw + rw;
 					if (b < bestw)
 					{
-						E new_e = e;
+						Node new_e = e;
 						new_e.x[e.s + 1] = e.x[i];
 						new_e.x[i] = e.x[e.s + 1];
 						new_e.cw = cw;

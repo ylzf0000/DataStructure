@@ -81,6 +81,21 @@
     <ClInclude Include="1171_2.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="dp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2017.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="1650.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="二分图匹配.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xxxx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

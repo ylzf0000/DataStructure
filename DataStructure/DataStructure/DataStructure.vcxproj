@@ -130,10 +130,13 @@
   <ItemGroup>
     <ClInclude Include="1171_1.h" />
     <ClInclude Include="1171_2.h" />
+    <ClInclude Include="1650.h" />
+    <ClInclude Include="2017.h" />
     <ClInclude Include="Algorithm.h" />
     <ClInclude Include="BiTree.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="DLinkList.h" />
+    <ClInclude Include="dp.h" />
     <ClInclude Include="dp01.h" />
     <ClInclude Include="exam.h" />
     <ClInclude Include="Graph.h" />
@@ -150,6 +153,8 @@
     <ClInclude Include="Test.h" />
     <ClInclude Include="ThreadTree.h" />
     <ClInclude Include="tsp.h" />
+    <ClInclude Include="xxxx.h" />
+    <ClInclude Include="二分图匹配.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm.cpp" />
